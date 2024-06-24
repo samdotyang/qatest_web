@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx,mdx, html}"],
   theme: {
     extend: {
@@ -49,6 +50,14 @@ module.exports = {
         'mac-light': 'rgba(255, 255, 255)',
         'hyperlink-dark': 'rgba(10, 132, 255)',
         'hyperlink-light': 'rgba(0, 122, 255)',
+        'primary-label': 'rgba(0, 0, 0, 1)',
+        'secondary-label': 'rgba(60, 60, 67, 0.6)',
+        'tertiary-label': 'rgba(60, 60, 67, 0.3)',
+        'quaternary-label': 'rgba(60, 60, 67, 0.18)',
+        'dark-primary-label': 'rgba(255, 255, 255, 1)',
+        'dark-secondary-label': 'rgba(235, 235, 245, 0.6)',
+        'dark-tertiary-label': 'rgba(235, 235, 245, 0.3)',
+        'dark-quaternary-label': 'rgba(235, 235, 245, 0.18)'
       }
     }
   },

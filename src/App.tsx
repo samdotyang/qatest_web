@@ -1,13 +1,17 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import Sidebar from './components/sidebar/sidebar';
+import React from "react";
+// import logo from './logo.svg';
+import "./App.css";
+// import Sidebar from './components/sidebar/sidebar';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DashboardLayout from "./Layout/DashboardLayout";
 
 function App() {
   return (
     <>
-    <Sidebar title="QATest" collapsed={false} setCollapsed={() => {}} shown={true}/>
-    <div className="App">
+      <BrowserRouter>
+        <Routes>
+          {/* <Sidebar title="QATest" collapsed={false} setCollapsed={() => {}} shown={true}/> */}
+          {/* <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -22,7 +26,11 @@ function App() {
           Learn React
         </a>
       </header>
-    </div>
+    </div> */}
+          {/* <Route path="/" element={<DashboardLayout />} /> */}
+          <Route path="*" element={<DashboardLayout />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

@@ -3,16 +3,17 @@ import {
   DocumentTextIcon,
   FolderIcon,
   HomeIcon,
-  Bars4Icon,
 } from "@heroicons/react/24/outline";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import { RiRobot2Line } from "react-icons/ri";
+
 // define a NavItem prop
 export type NavItem = {
   label: string;
   href: string;
   icon: React.ReactNode;
 };
+
 export const defaultNavItems: NavItem[] = [
   {
     label: "Dashboard",
@@ -35,7 +36,7 @@ export const defaultNavItems: NavItem[] = [
     icon: <IoSpeedometerOutline className="w-6 h-6" />,
   },
   {
-    label: "TestPlan",
+    label: "Test Plan",
     href: "/testplan",
     icon: <DocumentTextIcon className="w-6 h-6" />,
   },
