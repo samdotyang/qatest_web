@@ -6,7 +6,7 @@ type PageContentProps = {
 
 export const PageContent = ({ children }: PageContentProps) => {
     return (
-        <main id="primary-content" className='p-8' tabIndex={-1} role="main">
+        <main id="primary-content" className='p-8 h-screen overflow-auto' tabIndex={-1} role="main">
             {children}
         </main>
     )

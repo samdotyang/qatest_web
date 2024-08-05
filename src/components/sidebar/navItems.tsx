@@ -40,4 +40,9 @@ export const defaultNavItems: NavItem[] = [
     href: "/testplan",
     icon: <DocumentTextIcon className="w-6 h-6" />,
   },
+  {
+    label: "Test Case",
+    href: "/testcase",
+    icon: <DocumentTextIcon className="w-6 h-6" />,
+  },
 ];

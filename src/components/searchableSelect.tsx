@@ -1,3 +1,4 @@
+import { Popper } from "@mui/material";
 import React, { useState } from "react";
 
 type Option = {
@@ -11,6 +12,7 @@ type SearchableSelectProps = {
 };
 
 const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isShow, setIsShown] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredOptions, setFilteredOptions] = useState(options);
@@ -37,6 +39,11 @@ const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
     setIsShown(false);
   };
 
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setIsShown((prev) => !prev);
+  }
+
   return (
     <>
       <div className="relative">
@@ -51,7 +58,8 @@ const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
         />
         <button
           className="absolute end-2.5 bottom-1 rounded-lg my-1 dark:text-dark-primary-label"
-          onClick={() => setIsShown((prev) => !prev)}
+          aria-describedby="popover"
+          onClick={handleClick}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -70,17 +78,24 @@ const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
         </button>
       </div>
       {isShow && (
-        <ul className="rounded-b-lg bg-mac-light-card dark:bg-mac-dark-card p-2 h-60 overflow-auto">
-          {filteredOptions && filteredOptions.map((option) => (
-            <li
-              key={option.value}
-              className="text-primary-label dark:text-dark-primary-label p-2 hover:bg-mac-sidebar-dark-select hover:cursor-pointer"
-              onClick={() => handleSelect(option)}
-            >
-              {option.label}
-            </li>
-          ))}
-        </ul>
+        <Popper
+          id="popover"
+          open={isShow}
+          anchorEl={anchorEl}
+        >
+          <ul className="rounded-b-lg bg-mac-light-card dark:bg-mac-dark-card p-2 h-60 overflow-auto border">
+            {filteredOptions &&
+              filteredOptions.map((option) => (
+                <li
+                  key={option.value}
+                  className="text-primary-label dark:text-dark-primary-label p-2 hover:bg-mac-sidebar-dark-select hover:cursor-pointer"
+                  onClick={() => handleSelect(option)}
+                >
+                  {option.label}
+                </li>
+              ))}
+          </ul>
+        </Popper>
       )}
     </>
   );

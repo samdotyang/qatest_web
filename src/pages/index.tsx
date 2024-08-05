@@ -1,6 +1,7 @@
 import Stress from "./stress";
 import Home from "./home";
 import Automation from "./automation";
+import TestCasePage from "./testcase";
 
 const PageList = [
     {
@@ -16,6 +17,11 @@ const PageList = [
         name: "Automation",
         path: "/automation",
         component: <Automation />
+    },
+    {
+        name: "Test Case",
+        path: "/testcase",
+        component: <TestCasePage />
     }
 ]
 

@@ -30,9 +30,9 @@ const DashboardLayout = () => {
     <>
       <PageLoaderContextProvider>
         <PageAlertContextProvider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col max-h-screen">
             <PageAlert />
-            <div className="flex w-full flex-row flex-grow-1 overflow-x-hidden bg-mac-light-background dark:bg-mac-dark-background">
+            <div className="flex w-full flex-row overflow-x-hidden bg-mac-light-background dark:bg-mac-dark-background">
               <Sidebar
                 title={"QA"}
                 collapsed={sidebarCollapsed}

@@ -26,7 +26,7 @@ const Sidebar = ({
   return (
     <div
       className={classNames({
-        "bg-mac-sidebar-light dark:bg-mac-sidebar-dark text-primary-label dark:text-dark-primary-label":
+        "shrink-0 bg-mac-sidebar-light dark:bg-mac-sidebar-dark text-primary-label dark:text-dark-primary-label":
           true,
         "fixed md:static md:translate-x-0 z-20": true,
         "transition-all duration-300 ease-in-out": true,
