@@ -1,4 +1,4 @@
-import { Alert } from "reactstrap";
+import Alert from "@mui/material/Alert";
 import { PageAlertContext } from "@/contexts/pageAlertContext";
 
 export default function PageAlert() {
@@ -7,10 +7,8 @@ export default function PageAlert() {
       {(context) =>
         context?.showAlert && (
           <Alert
-            color={context.alertContent.type}
-            fade={false}
-            isOpen={context.showAlert}
-            toggle={context.closeAlert}
+            severity={context.alertContent.type}
+            onClose={context.closeAlert}
           >
             {context.alertContent.message}
           </Alert>

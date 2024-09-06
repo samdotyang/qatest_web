@@ -4,14 +4,18 @@ import "./App.css";
 // import Sidebar from './components/sidebar/sidebar';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import DashboardLayout from "./Layout/DashboardLayout";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          {/* <Sidebar title="QATest" collapsed={false} setCollapsed={() => {}} shown={true}/> */}
-          {/* <div className="App">
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            {/* <Sidebar title="QATest" collapsed={false} setCollapsed={() => {}} shown={true}/> */}
+            {/* <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -27,10 +31,11 @@ function App() {
         </a>
       </header>
     </div> */}
-          {/* <Route path="/" element={<DashboardLayout />} /> */}
-          <Route path="*" element={<DashboardLayout />} />
-        </Routes>
-      </BrowserRouter>
+            {/* <Route path="/" element={<DashboardLayout />} /> */}
+            <Route path="*" element={<DashboardLayout />} />
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
     </>
   );
 }

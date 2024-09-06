@@ -5,6 +5,8 @@ import {
   useState,
   useContext,
 } from "react";
+import useMediaQuery from "@mui/material/useMediaQuery";
+
 
 type ThemeContextProviderProps = {
   children: React.ReactNode;
@@ -22,6 +24,7 @@ export const ThemeContext = createContext<ThemeContextType | null>(null);
 export function ThemeContextProvider(
   props: ThemeContextProviderProps
 ): ReactElement {
+  const preferDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [isDarkTheme, setIsDarkTheme] = useState(true);
   useEffect(() => initialThemeHandler());
 
@@ -31,7 +34,8 @@ export function ThemeContextProvider(
 
   function initialThemeHandler(): void {
     if (isLocalStorageEmpty()) {
-      localStorage.setItem("isDarkTheme", `true`);
+      console.log(preferDarkMode)
+      localStorage.setItem("isDarkTheme", `${preferDarkMode}`);
       document.querySelector("body")!.classList.add("dark");
     } else {
       const isDarkTheme: boolean = JSON.parse(
@@ -45,7 +49,6 @@ export function ThemeContextProvider(
   }
 
   function toggleThemeHandler(): void {
-    console.log("DSJFKDSFJLKSDF");
     const isDarkTheme: boolean = JSON.parse(
       localStorage.getItem("isDarkTheme")!
     );

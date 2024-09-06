@@ -42,7 +42,7 @@ const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
     setIsShown((prev) => !prev);
-  }
+  };
 
   return (
     <>
@@ -78,13 +78,9 @@ const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
         </button>
       </div>
       {isShow && (
-        <Popper
-          id="popover"
-          open={isShow}
-          anchorEl={anchorEl}
-        >
+        <Popper id="popover" open={isShow} anchorEl={anchorEl}>
           <ul className="rounded-b-lg bg-mac-light-card dark:bg-mac-dark-card p-2 h-60 overflow-auto border">
-            {filteredOptions &&
+            {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <li
                   key={option.value}
@@ -93,7 +89,15 @@ const SearchableSelect = ({ options, onSelect }: SearchableSelectProps) => {
                 >
                   {option.label}
                 </li>
-              ))}
+              ))
+            ) : (
+              <li
+                key="no_option"
+                className="text-primary-label dark:text-dark-primary-label p-2 hover:bg-mac-sidebar-dark-select hover:cursor-pointer"
+              >
+                No Results Found
+              </li>
+            )}
           </ul>
         </Popper>
       )}

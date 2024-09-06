@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-import TestStep from "@/components/testStep/testStep";
+import AutomationTestStep from "@/components/testStep/automationTestStep";
 
 const AutomationTestCase = () => {
   const [testcase, setTestCase] = useState<Record<string, any> | null>(null);
@@ -60,7 +60,7 @@ const AutomationTestCase = () => {
       <div className="flex flex-col space-y-2 overflow-y-hidden hover:overflow-y-auto">
         {testcase &&
           testcase["steps"].map((step: string, index: number) => (
-            <TestStep index={index} step={step} key={index} />
+            <AutomationTestStep index={index} step={step} key={index} />
           ))}
       </div>
     </div>

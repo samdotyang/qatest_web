@@ -1,25 +1,28 @@
 import SearchableSelect from "@/components/searchableSelect";
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useAutomationFeatureList, useAutomationServiceList, useGetAutomationRunnerList } from "@/hooks";
 
 import { MediumCard } from "@/components/ui/card";
 import Terminal from "@/components/terminal/terminal";
-
-type Option = {
-  value: string;
-  label: string;
-};
+import { usePageAlertContext } from "@/contexts/pageAlertContext";
+import { AutomationRunnerList } from "@/components/automation/automationRunnerList";
 
 const priority = ["None", "RAT", "FAST", "TOFT", "FET"];
 const platform = ["Web", "Api", "iOS", "Android"];
 
 const Automation = () => {
+  const pageAlertContext = usePageAlertContext();
   const messageRef = useRef<HTMLPreElement>(null);
   const [socket, setSocket] = useState<WebSocket | null>(null);
-  const [createSocket, setCreateSocket] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [content, setContent] = useState("");
+  const { featuresIsFetching, features, featuresFetchError } =
+    useAutomationFeatureList();
+  const { servicesIsFetching, services, servicesFetchError } =
+    useAutomationServiceList();
 
+  const { isAutomationRunnerListFetching, automationRunnerList, automationRunnerListError } = useGetAutomationRunnerList();
   const [automationConfig, setAutomationConfig] = useState({
     cases: "",
     repeat: 1,
@@ -29,87 +32,78 @@ const Automation = () => {
     use_element: false,
   });
 
-  const [featureList, setFeatureList] = useState<Option[]>([]);
-
-  const handleSelect = (option: Record<string, string>) => {
-    setAutomationConfig((prev) => ({ ...prev, feature: option.value }));
-  };
-
-  const getFeatures = async () => {
-    fetch(`${process.env.REACT_APP_BACKEND_API}/automation/features`)
-      .then((res) =>
-        res.json().then((data) => {
-          const features: Option[] = [];
-          data.data.map((feature: string) =>
-            features.push({ value: feature, label: feature })
-          );
-          console.log(features);
-          setFeatureList(features);
-        })
-      )
-      .catch((err) => err);
-  };
-
-  const sendConfig = async () => {
-    console.log(automationConfig);
-    setButtonDisabled(true);
-    const res = await axios.post(
-      `${process.env.REACT_APP_BACKEND_API}/automation/run`,
-      automationConfig
-    );
-    setSocket(
-      new (window.WebSocket as new (url: string) => WebSocket)(
-        `${process.env.REACT_APP_BACKEND_API}/terminal/ws`
-      )
-    );
-    console.log(res.data);
-    setCreateSocket(true);
-    setButtonDisabled(false);
-  };
-
   useEffect(() => {
-    console.log("USE EFFECT CALLED");
-    getFeatures();
     if (socket) {
       socket.onopen = () => {
-        console.log("WebSocket connection opened");
+        setContent("");
       };
 
       socket.onmessage = (event) => {
-        console.log(event.data);
         if (messageRef.current) {
           messageRef.current.textContent += `${event.data}\n`;
         }
         setContent((prev) => (prev += `${event.data}\n`));
       };
 
-      socket.onclose = () => {
-        console.log("WebSocket connection closed");
-      };
+      socket.onclose = () => {};
 
       socket.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        pageAlertContext.setAlert(`${error}`, "error");
       };
     }
-  }, [socket, messageRef]);
 
-  // handle user input
-  const handleCaseIds = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAutomationConfig((prev) => ({ ...prev, cases: e.target.value }));
+    return () => {
+      if (socket) {
+        socket?.close();
+        console.log("WebSocket connection closed");
+      }
+    };
+  }, [socket, messageRef, pageAlertContext]);
+
+  // const [featureList, setFeatureList] = useState<Option[]>([]);
+
+  const handleSelect = (option: Record<string, string>) => {
+    console.log(option);
+    setAutomationConfig((prev) => ({ ...prev, feature: option.value }));
   };
 
-  const handleEnvironment = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAutomationConfig((prev) => ({ ...prev, environment: e.target.value }));
-  };
-
-  const handlePriority = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value !== "None") {
-      setAutomationConfig((prev) => ({ ...prev, priority: e.target.value }));
+  const sendConfig = async () => {
+    console.log(automationConfig);
+    setButtonDisabled(true);
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_API}/automation/run`,
+        automationConfig
+      );
+      console.log(response.data.data.request_id);
+      setSocket(
+        new (window.WebSocket as new (url: string) => WebSocket)(
+          `${process.env.REACT_APP_BACKEND_API}/terminal/ws/${response.data.data.request_id}`
+        )
+      );
+      setButtonDisabled(false);
+    } catch (error) {
+      pageAlertContext.setAlert(`${error}`, "error");
     }
   };
 
-  const handlePlatform = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAutomationConfig((prev) => ({ ...prev, platform: e.target.value }));
+  const handleConfigChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    console.log(event.target.name);
+    if (event.target.name === "priority") {
+      if (event.target.value !== "None") {
+        setAutomationConfig((prev) => ({
+          ...prev,
+          [event.target.name]: event.target.value,
+        }));
+      }
+    } else {
+      setAutomationConfig((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.value,
+      }));
+    }
   };
 
   const handleClickDriverClass = (value: boolean) => {
@@ -130,7 +124,8 @@ const Automation = () => {
               <input
                 className="p-2 col-span-2 rounded-lg border border-dark-quaternary-label dark:border-dark-quaternary-label bg-transparent"
                 placeholder="KQT-xxxx"
-                onChange={handleCaseIds}
+                name="cases"
+                onChange={handleConfigChange}
               />
             </div>
             <hr className="h-px border-0 ml-10 bg-quaternary-label dark:bg-dark-quaternary-label" />
@@ -138,12 +133,40 @@ const Automation = () => {
               <label htmlFor="" className="m-auto">
                 Feature:
               </label>
-              <span className="col-span-2">
-                <SearchableSelect
-                  options={featureList}
-                  onSelect={handleSelect}
-                />
-              </span>
+              {featuresIsFetching && <span className="p-2">Loading...</span>}
+              {featuresFetchError && (
+                <span className="p-2">Cannot load features...</span>
+              )}
+              {!featuresIsFetching && !featuresFetchError && (
+                <span className="col-span-2">
+                  <SearchableSelect
+                    // @ts-ignore
+                    options={features}
+                    name="feature"
+                    onSelect={handleSelect}
+                  />
+                </span>
+              )}
+            </div>
+            <hr className="h-px border-0 ml-10 bg-quaternary-label dark:bg-dark-quaternary-label" />
+            <div className="grid grid-cols-3">
+              <label htmlFor="" className="m-auto">
+                Service:
+              </label>
+              {servicesIsFetching && <span className="p-2">Loading...</span>}
+              {servicesFetchError && (
+                <span className="p-2">Cannot load services...</span>
+              )}
+              {!servicesIsFetching && !servicesFetchError && (
+                <span className="col-span-2">
+                  <SearchableSelect
+                    // @ts-ignore
+                    options={services}
+                    name="service"
+                    onSelect={handleSelect}
+                  />
+                </span>
+              )}
             </div>
             <hr className="h-px border-0 ml-10 bg-quaternary-label dark:bg-dark-quaternary-label" />
             <div className="grid grid-cols-3">
@@ -151,15 +174,17 @@ const Automation = () => {
               <input
                 className="col-span-2 rounded-lg border border-dark-quaternary-label dark:border-dark-quaternary-label p-2 bg-transparent"
                 defaultValue={"stage"}
-                onChange={handleEnvironment}
+                name="environment"
+                onChange={handleConfigChange}
               />
             </div>
             <hr className="h-px border-0 ml-10 bg-quaternary-label dark:bg-dark-quaternary-label" />
             <div className="grid grid-cols-3">
               <label className="m-auto">Priority:</label>
               <select
-                className="col-span-2 rounded-lg border border-dark-quaternary-label dark:border-dark-quaternary-label p-2 bg-transparent"
-                onChange={handlePriority}
+                className="col-span-2 rounded-lg border-transparent border-r-8 outline outline-dark-quaternary-label dark:outline-dark-quaternary-label p-2 bg-transparent"
+                name="priority"
+                onChange={handleConfigChange}
               >
                 {priority.map((priority, index) => (
                   <option key={index}>{priority}</option>
@@ -170,9 +195,10 @@ const Automation = () => {
             <div className="grid grid-cols-3">
               <label className="m-auto">Platform:</label>
               <select
-                className="col-span-2 rounded-lg border border-dark-quaternary-label dark:border-dark-quaternary-label p-2 bg-transparent"
-                onChange={handlePlatform}
+                className="col-span-2 rounded-lg border-transparent border-r-8 outline outline-dark-quaternary-label dark:outline-dark-quaternary-label p-2 bg-transparent"
                 value={automationConfig.platform}
+                name="platform"
+                onChange={handleConfigChange}
               >
                 {platform.map((priority, index) => (
                   <option key={index}>{priority}</option>
@@ -209,7 +235,7 @@ const Automation = () => {
               </div>
               <div className="absolute block max-w-full bottom-0 right-4 left-0">
                 <button
-                  className="m-2 p-2 bg-blue-500 rounded-lg w-full uppercase disabled:bg-blue-900"
+                  className="m-2 p-2 bg-blue-500 rounded-lg w-full uppercase disabled:bg-blue-900 text-dark-primary-label"
                   onClick={() => sendConfig()}
                   disabled={buttonDisabled}
                 >
@@ -220,6 +246,10 @@ const Automation = () => {
           </MediumCard>
         </div>
         <Terminal content={content} />
+        <div>
+          {automationRunnerListError && <div>{automationRunnerListError.message}</div>}
+          {!isAutomationRunnerListFetching && <AutomationRunnerList runnerList={automationRunnerList}/>}
+        </div>
       </div>
     </>
   );

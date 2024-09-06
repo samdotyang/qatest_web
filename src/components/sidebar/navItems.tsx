@@ -21,19 +21,9 @@ export const defaultNavItems: NavItem[] = [
     icon: <HomeIcon className="w-6 h-6" />,
   },
   {
-    label: "Automation",
-    href: "/automation",
-    icon: <RiRobot2Line className="w-6 h-6" />,
-  },
-  {
     label: "Projects",
     href: "/projects",
     icon: <FolderIcon className="w-6 h-6" />,
-  },
-  {
-    label: "Stress Test",
-    href: "/stress",
-    icon: <IoSpeedometerOutline className="w-6 h-6" />,
   },
   {
     label: "Test Plan",
@@ -44,5 +34,15 @@ export const defaultNavItems: NavItem[] = [
     label: "Test Case",
     href: "/testcase",
     icon: <DocumentTextIcon className="w-6 h-6" />,
+  },
+  {
+    label: "Automation",
+    href: "/automation",
+    icon: <RiRobot2Line className="w-6 h-6" />,
+  },
+  {
+    label: "Stress Test",
+    href: "/stress",
+    icon: <IoSpeedometerOutline className="w-6 h-6" />,
   },
 ];

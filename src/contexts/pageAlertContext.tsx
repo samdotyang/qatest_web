@@ -5,9 +5,23 @@ type PageAlertContextProviderProps = {
 };
 
 type PageAlertContextType = {
-    showAlert: boolean;
-  alertContent: {message?: any, type?: any};
+  /**
+   * Show or hide the alert
+   */
+  showAlert: boolean;
+  /**
+   * The content of the alert
+   */
+  alertContent: { message?: any; type?: any };
+  /**
+   * Set the alert content and show the alert
+   * @param message The message to display in the alert
+   * @param type The type of alert (e.g. "success", "info", "error", "warning")
+   */
   setAlert: (message: string, type: string) => void;
+  /**
+   * Close the alert
+   */
   closeAlert: () => void;
 };
 
@@ -19,7 +33,7 @@ export function PageAlertContextProvider(
   props: PageAlertContextProviderProps
 ): ReactElement {
   const [showAlert, setShowAlert] = useState(false);
-  const [alertContent, setAlertContent] = useState({})
+  const [alertContent, setAlertContent] = useState({});
 
   function closeAlert(): void {
     setShowAlert(false);
@@ -28,12 +42,14 @@ export function PageAlertContextProvider(
 
   const setAlert = (message: string, type: string) => {
     const newAlert = { message, type };
-    setShowAlert(true)
-    setAlertContent(newAlert)
-  }
+    setShowAlert(true);
+    setAlertContent(newAlert);
+  };
 
   return (
-    <PageAlertContext.Provider value={{ showAlert, alertContent, setAlert, closeAlert }}>
+    <PageAlertContext.Provider
+      value={{ showAlert, alertContent, setAlert, closeAlert }}
+    >
       {props.children}
     </PageAlertContext.Provider>
   );
