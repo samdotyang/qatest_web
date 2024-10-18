@@ -14,7 +14,8 @@ import {
 } from "./automation"
 
 import {
-  useTestRunList
+  useTestRunList,
+  useTestRunDetail,
 } from "./testrun"
 
 export {
@@ -28,7 +29,8 @@ export {
   useGetStressDataList,
   useGetStressData,
   useGetStressHistoryList,
-
+  
   //testrun
   useTestRunList,
+  useTestRunDetail,
 };

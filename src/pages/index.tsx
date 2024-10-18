@@ -7,6 +7,7 @@ import Dashboard from "./dashboard";
 import ReportDashboardPage from "./reportDashboard";
 import ReportPage from "./report";
 import TestRunPage from "./testrun";
+import TestRunDetailPage from "./testrunDetail";
 
 const PageList = [
     {
@@ -42,6 +43,11 @@ const PageList = [
         name: "Test Run",
         path: "/testrun",
         component: <TestRunPage />,
+      },
+      {
+        name: "Test Run",
+        path: "/testrun/:testRunId",
+        component: <TestRunDetailPage />,
       },
       {
         name: "Report",

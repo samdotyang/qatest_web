@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { useNavigate } from "react-router-dom";
 
 type TestRun = {
   build_version: number;
@@ -7,6 +8,7 @@ type TestRun = {
   pass: number;
   fail: number;
   title: string;
+  test_run_uuid: string;
 };
 
 type TestRunItemProps = {
@@ -15,6 +17,7 @@ type TestRunItemProps = {
 };
 
 const TestRunListItem = ({ index, testrun }: TestRunItemProps) => {
+  const navigate = useNavigate();
   return (
     <>
       <div
@@ -23,23 +26,34 @@ const TestRunListItem = ({ index, testrun }: TestRunItemProps) => {
           index % 2 === 0
             ? "bg-mac-light-card dark:bg-mac-dark-card"
             : "bg-transparent"
-        } p-2 rounded-lg`}
+        } p-2 rounded-lg hover:cursor-pointer`}
+        onClick={() => {
+          navigate(`/testrun/${testrun.test_run_uuid}`);
+        }}
       >
         {Object.entries(testrun).map(([key, value]) => (
-          <div className="basis-1/4" key={`${key}_${value}`}>
-            {key === "build_version" ? (
+          <div className="m-auto basis-1/4" key={`${key}_${value}`}>
+            {/* {key === "test_run_uuid" ? (
               <a
-                href={`/run/${testrun[key]}`}
+                href={`/testrun/${testrun[key]}`}
                 className="font-medium text-hyperlink-light dark:text-hyperlink-dark hover:underline"
               >
                 {value}
               </a>
-            ) : (
-              <>
+            ) : ( */}
+            <>
               {key === "start_time" || key === "end_time" ? (
-              <time><Suspense fallback={null}>{`${new Date(value).toLocaleString('zh-TW', {hour12: false, timeZone: "UTC"})}`}</Suspense></time>) : value}
-              </>
-            )}
+                <time>
+                  <Suspense fallback={null}>{`${new Date(value).toLocaleString(
+                    "zh-TW",
+                    { hour12: false, timeZone: "UTC" }
+                  )}`}</Suspense>
+                </time>
+              ) : (
+                value
+              )}
+            </>
+            {/* )} */}
           </div>
         ))}
       </div>
