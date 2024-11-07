@@ -6,8 +6,11 @@ import TestPlanPage from "./testplan";
 import Dashboard from "./dashboard";
 import ReportDashboardPage from "./reportDashboard";
 import ReportPage from "./report";
-import TestRunPage from "./testrun";
+import TestSuitePage from "./testSuite";
 import TestRunDetailPage from "./testrunDetail";
+import CreateTestSuitePage from "./createTestSuite";
+import TestSuiteDetailPage from "./testSuiteDetail";
+import LogsPage from "./logs";
 
 const PageList = [
     {
@@ -40,9 +43,9 @@ const PageList = [
         component: <TestPlanPage />
     },
     {
-        name: "Test Run",
-        path: "/testrun",
-        component: <TestRunPage />,
+        name: "Test Suite",
+        path: "/testsuite",
+        component: <TestSuitePage />,
       },
       {
         name: "Test Run",
@@ -58,6 +61,21 @@ const PageList = [
         name: "Report",
         path: "/report/:testrunid",
         component: <ReportPage />
+      },
+      {
+        name: "Create Test Suite",
+        path: "/testsuite/create",
+        component: <CreateTestSuitePage />
+      },
+      {
+        name: "Test Suite Detail",
+        path: "/testsuite/:testSuiteId",
+        component: <TestSuiteDetailPage />
+      },
+      {
+        name: "Log",
+        path: "logs",
+        component: <LogsPage />
       }
 ]
 

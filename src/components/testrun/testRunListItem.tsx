@@ -18,6 +18,7 @@ type TestRunItemProps = {
 
 const TestRunListItem = ({ index, testrun }: TestRunItemProps) => {
   const navigate = useNavigate();
+
   return (
     <>
       <div

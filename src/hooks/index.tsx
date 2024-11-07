@@ -2,6 +2,7 @@ import {
   useAutomationCaseCount,
   useAutomationFeatureList,
   useAutomationServiceList,
+  useGetAutomationTestCase,
 } from "./testcase";
 import {
   useGetStressDataList,
@@ -9,14 +10,11 @@ import {
   useGetStressHistoryList,
 } from "./stress";
 
-import {
-  useGetAutomationRunnerList
-} from "./automation"
+import { useGetAutomationRunnerList } from "./automation";
 
-import {
-  useTestRunList,
-  useTestRunDetail,
-} from "./testrun"
+import { useTestRunList, useTestRunDetail } from "./testrun";
+
+import { useGetTestSuiteList } from "./testSuite";
 
 export {
   // Automation
@@ -24,13 +22,17 @@ export {
   useAutomationFeatureList,
   useAutomationServiceList,
   useGetAutomationRunnerList,
-  
+  useGetAutomationTestCase,
+
   // Stress
   useGetStressDataList,
   useGetStressData,
   useGetStressHistoryList,
-  
+
   //testrun
   useTestRunList,
   useTestRunDetail,
+
+  //testsuite
+  useGetTestSuiteList,
 };

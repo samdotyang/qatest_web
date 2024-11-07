@@ -10,7 +10,7 @@ type AutomationTestStepProps = {
 const AutomationTestStep = ({ index, step }: AutomationTestStepProps) => {
   const [showStep, setShowStep] = useState(false);
   const [jsonStep, setJsonStep] = useState(JSON.parse(step));
-  console.log(jsonStep.args)
+
   return (
     <>
     <div className="my-auto">

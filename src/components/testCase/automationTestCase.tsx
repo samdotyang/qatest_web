@@ -11,7 +11,6 @@ const AutomationTestCase = () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_API}/testcase/${caseId}`
     );
-    console.log(res.data["data"]);
     setTestCase(res.data["data"]);
   };
   return (

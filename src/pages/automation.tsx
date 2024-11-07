@@ -55,7 +55,6 @@ const Automation = () => {
     return () => {
       if (socket) {
         socket?.close();
-        console.log("WebSocket connection closed");
       }
     };
   }, [socket, messageRef, pageAlertContext]);
@@ -63,19 +62,16 @@ const Automation = () => {
   // const [featureList, setFeatureList] = useState<Option[]>([]);
 
   const handleSelect = (option: Record<string, string>) => {
-    console.log(option);
     setAutomationConfig((prev) => ({ ...prev, feature: option.value }));
   };
 
   const sendConfig = async () => {
-    console.log(automationConfig);
     setButtonDisabled(true);
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_API}/automation/run`,
         automationConfig
       );
-      console.log(response.data.data.request_id);
       setSocket(
         new (window.WebSocket as new (url: string) => WebSocket)(
           `${process.env.REACT_APP_BACKEND_API}/terminal/ws/${response.data.data.request_id}`
@@ -90,7 +86,6 @@ const Automation = () => {
   const handleConfigChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    console.log(event.target.name);
     if (event.target.name === "priority") {
       if (event.target.value !== "None") {
         setAutomationConfig((prev) => ({

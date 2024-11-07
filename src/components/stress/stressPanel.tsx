@@ -23,7 +23,7 @@ const EditablePre = ({ key, content }: EditablePreProps) => {
 };
 
 export const StressData = ({ stressData }: StressDataProps) => {
-  console.log(stressData);
+
   return (
     <>
       <div className="flex">
@@ -89,7 +89,7 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
   });
 
   const selectData = (filename: string) => {
-    console.log(filename);
+  
     setSelectedPresetFilename(filename);
     setStressConfig((prev) => ({ ...prev, endpoint: filename }));
   };
@@ -103,7 +103,7 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
         event.target.value = "1";
       }
     }
-    console.log("%s changed, value: %s", event.target.name, event.target.value);
+  
     setStressConfig((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -170,7 +170,6 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
           <button
             className=" text-white bg-blue-500 w-full border rounded-lg p-2"
             onClick={() => {
-              console.log(stressConfig);
               onSubmit(stressConfig);
             }}
           >

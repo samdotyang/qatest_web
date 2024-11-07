@@ -8,7 +8,6 @@ import TestExecutionList from "@/components/testExecution";
 import { QAPieChart } from "@/components/ui/chart";
 import { FailCaseModal } from "@/components/modal";
 
-
 type CaseExecution = {
   description: string;
   exc_time: string;
@@ -27,7 +26,6 @@ type TestExecution = {
 };
 
 const sort_object = (data: TestExecution, filterString: string) => {
-  console.log(data, filterString);
   const sorted_data: Record<string, any> = {};
 
   Object.entries(data.cases).forEach(([key, value], index) => {
@@ -60,13 +58,11 @@ const TestRunDetailPage = () => {
   const [itemClicked, setItemClicked] = useState<any>();
 
   const handleItemClicked = (item: any) => {
-    console.log("CLICKed item: ", item)
-    setShowModal((prev) => !prev)
+    setShowModal((prev) => !prev);
     setItemClicked(item);
-  }
+  };
 
   const calculatePassFailRate = (data: Record<string, CaseExecution[]>) => {
-    console.log(data);
     const chartData = Object.keys(data).reduce(
       (acc, feature) => {
         const passCount = data[feature].filter(
@@ -126,8 +122,9 @@ const TestRunDetailPage = () => {
       </>
     );
   } else {
-    console.log(testRunDetailError)
-    return <div>Error fetching test run details {testRunDetailError.message}</div>;
+    return (
+      <div>Error fetching test run details {testRunDetailError.message}</div>
+    );
   }
 };
 

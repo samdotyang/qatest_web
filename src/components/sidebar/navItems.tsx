@@ -32,8 +32,8 @@ export const defaultNavItems: NavItem[] = [
     icon: <DocumentTextIcon className="w-6 h-6" />,
   },
   {
-    label: "Test Run",
-    href: "/testrun",
+    label: "Test Suite",
+    href: "/testsuite",
     icon: <DocumentTextIcon className="w-6 h-6" />,
   },
   {

@@ -8,7 +8,6 @@ import { QALineChart } from "@/components/ui/chart";
 
 const ReportDashboardPage = () => {
   const params = useParams();
-  console.log(params);
   const data = [
     { date: "A", pass_rate: 100 },
     { date: "B", pass_rate: 50 },

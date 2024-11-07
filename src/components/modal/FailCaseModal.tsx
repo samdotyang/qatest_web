@@ -16,7 +16,7 @@ export interface TestCaseFailedInfo {
   fail_function: string;
   terminal_output: string;
   log_file_path: string;
-  steps: Array<string>
+  steps: Array<string>;
 }
 
 interface FailTestCaseModalProps {
@@ -27,8 +27,8 @@ interface FailTestCaseModalProps {
 
 type StepProps = {
   stepName: string;
-  args: {}
-}
+  args: {};
+};
 
 const FailStep = ({ stepName, args }: StepProps) => {
   return (
@@ -154,6 +154,8 @@ export const FailCaseModal = ({
               <div className="col-span-2">{data.build_version}</div>
               <div>Description:</div>
               <div className="col-span-2">{data.description}</div>
+              <div>Status:</div>
+              <div className="col-span-2">{data.status}</div>
               <div className="col-span-1">Steps:</div>
               <div className="col-span-2 inline-flex">
                 <FcApproval className="mt-1.5 mr-1.5" />- pass
@@ -165,27 +167,35 @@ export const FailCaseModal = ({
                 const args = JSON.parse(item)["args"];
                 const lineNo = JSON.parse(item)["lineNo"];
                 var fail_lineNo;
-                try {
-                  fail_lineNo = JSON.parse(data.fail_function)["lineNum"];
-                } catch {
-                  fail_lineNo = data.fail_function;
-                }
-                if (fail_lineNo === lineNo) {
-                  return (
-                    <>
-                      <FailStep stepName={stepName} args={args} />
-                    </>
-                  );
-                } else if (lineNo < fail_lineNo && lineNo != fail_lineNo) {
-                  return (
-                    <>
-                      <PassStep stepName={stepName} args={args} />
-                    </>
-                  );
+                if (data.status === "Fail") {
+                  try {
+                    fail_lineNo = JSON.parse(data.fail_function)["lineNum"];
+                  } catch {
+                    fail_lineNo = data.fail_function;
+                  }
+                  if (fail_lineNo === lineNo) {
+                    return (
+                      <>
+                        <FailStep stepName={stepName} args={args} />
+                      </>
+                    );
+                  } else if (lineNo < fail_lineNo && lineNo !== fail_lineNo) {
+                    return (
+                      <>
+                        <PassStep stepName={stepName} args={args} />
+                      </>
+                    );
+                  } else {
+                    return (
+                      <>
+                        <SkipStep stepName={stepName} args={args} />
+                      </>
+                    );
+                  }
                 } else {
                   return (
                     <>
-                      <SkipStep stepName={stepName} args={args} />
+                      <PassStep stepName={stepName} args={args} />
                     </>
                   );
                 }
@@ -199,7 +209,11 @@ export const FailCaseModal = ({
               <div>Log:</div>
               <div className="col-span-2 flex-1">
                 <a
-                  href={`/logs/${data.log_file_path}`}
+                  href={`/logs?date=${data.log_file_path.split("/")[0]}&host=${
+                    data.log_file_path.split("/")[1]
+                  }&folder=${data.log_file_path.split("/")[2]}&feature=${
+                    data.log_file_path.split("/")[3]
+                  }&name=${data.log_file_path.split("/")[4].split('.')[0]}`}
                   className="text-blue-600 dark:text-blue-500 hover:underline"
                   rel="noreferrer"
                   target="_blank"
@@ -209,7 +223,9 @@ export const FailCaseModal = ({
               </div>
             </ModalBody>
             {/* <!-- Modal footer --> */}
-            <ModalFooter><></></ModalFooter>
+            <ModalFooter>
+              <></>
+            </ModalFooter>
           </div>
         </div>
       </div>

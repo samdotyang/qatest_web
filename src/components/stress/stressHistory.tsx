@@ -10,7 +10,6 @@ const StressHistory = () => {
     stressHistoryListError,
   } = useGetStressHistoryList();
 
-  console.log(stressHistoryList);
   useEffect(() => {
     if (dataFetchedRef.current) return;
     dataFetchedRef.current = true;

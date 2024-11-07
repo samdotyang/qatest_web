@@ -26,10 +26,9 @@ const TestExecutionItem = ({ value, onItemClick }: { value: CaseExecution, onIte
   return (
     <>
       <div className="flex p-2 rounded-lg hover:bg-gray-400 hover:cursor-pointer" onClick={() => {
-        console.log(value)
         onItemClick(value)
         }}>
-        <div className="basis-2/12">{value.name}</div>
+        <div className="basis-2/12 overflow-auto flex-grow flex-shrink">{value.name}</div>
         <div className="basis-6/12">{value.description}</div>
         <div className="basis-2/12">{toTimeString(value.exc_time)}</div>
         <div className="basis-2/12">

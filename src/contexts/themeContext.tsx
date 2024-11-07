@@ -34,7 +34,6 @@ export function ThemeContextProvider(
 
   function initialThemeHandler(): void {
     if (isLocalStorageEmpty()) {
-      console.log(preferDarkMode)
       localStorage.setItem("isDarkTheme", `${preferDarkMode}`);
       document.querySelector("body")!.classList.add("dark");
     } else {

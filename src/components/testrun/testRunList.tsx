@@ -42,7 +42,6 @@ const TestRunList = ({ rows }: { rows: number }) => {
   if (isTestRunListLoading) {
     return <div className="text-primary-lable dark:text-dark-primary-label">Loading...</div>;
   }
-  console.log(testRunList)
 
   return (
     <>

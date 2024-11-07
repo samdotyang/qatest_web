@@ -13,12 +13,10 @@ const Stress = () => {
 
   const handleSubmit = async (config: any) => {
     try {
-      console.log(config);
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_API}/stress/run`,
         config
       );
-      console.log(response.data.request_id);
       setSocket(
         new (window.WebSocket as new (url: string) => WebSocket)(
           `${process.env.REACT_APP_BACKEND_API}/terminal/ws/${response.data.request_id}`
@@ -32,12 +30,12 @@ const Stress = () => {
   useEffect(() => {
     if (socket) {
       socket.onopen = () => {
-        console.log("WebSocket connection opened");
+        
         setTerminalContent("");
       };
 
       socket.onmessage = (event) => {
-        console.log(event.data);
+        
         if (messageRef.current) {
           messageRef.current.textContent += `${event.data}\n`;
         }
@@ -45,7 +43,7 @@ const Stress = () => {
       };
 
       socket.onclose = () => {
-        console.log("WebSocket connection closed");
+        
       };
 
       socket.onerror = (error) => {

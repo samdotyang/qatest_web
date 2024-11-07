@@ -1,6 +1,6 @@
-import TestRunHistory from "@/components/testrun/testRunHistory";
+import { TestSuiteList } from "@/components/testSuite";
 
-const TestRunPage = () => {
+const TestSuitePage = () => {
   return (
     <>
       <div className="flex flex-col space-y-2">
@@ -20,10 +20,10 @@ const TestRunPage = () => {
           </div>
           <div></div>
         </div>
-        <TestRunHistory />
+        <TestSuiteList />
       </div>
     </>
   );
 };
 
-export default TestRunPage;
+export default TestSuitePage;

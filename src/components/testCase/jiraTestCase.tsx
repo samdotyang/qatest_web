@@ -38,8 +38,6 @@ const JiraTestCase = () => {
     const res = await axios.get(
       `${process.env.REACT_APP_BACKEND_API}/testcase/jira/${caseId}`
     );
-    console.log(res.data);
-    console.log(res.data["data"]["precondition"]);
     res.data["data"]["precondition"] = res.data["data"][
       "precondition"
     ].replaceAll("<br />", "\n");
@@ -60,7 +58,6 @@ const JiraTestCase = () => {
 
   useEffect(() => {
     if (textareaRef.current) {
-      console.log(textareaRef.current);
       // @ts-ignore
       textareaRef.current.style.height = "auto";
       // @ts-ignore

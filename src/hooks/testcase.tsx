@@ -70,3 +70,20 @@ export const useAutomationServiceList = () => {
   };
 };
 
+export const useGetAutomationTestCase = (caseId: string) => {
+  const {isFetching, data, error} = useQuery({
+    queryKey: [`automationCase_${caseId}`],
+    queryFn: async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_API}/testcase/automation/${caseId}`
+      );
+      const json_response = await response.json();
+      return json_response;
+    }
+  });
+  return {
+    automationTestCaseIsFetching: isFetching,
+    automationTestCase: data,
+    automationTestCaseError: error,
+  };
+}

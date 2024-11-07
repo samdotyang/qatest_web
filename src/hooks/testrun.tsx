@@ -30,7 +30,6 @@ export const useTestRunDetail = (testRunId: string) => {
         `${process.env.REACT_APP_BACKEND_API}/report/${testRunId}`
       );
       const json_response = await response.json();
-      console.log(json_response);
       return json_response.data;
     },
   });
