@@ -29,15 +29,15 @@ const TestSuiteList = () => {
         )}
         {isTestSuiteListFetching && (
           <>
-            {Array.from({ length: 10 }).map((_) => (
-              <div className="dark:bg-mac-dark-card rounded-lg p-2">
+            {Array.from({ length: 10 }).map((_, index) => (
+              <div key={index} className="dark:bg-mac-dark-card rounded-lg p-2">
                 <Skeleton variant="rectangular" height={20} />
               </div>
             ))}
           </>
         )}
-        {!isTestSuiteListFetching && testSuiteList && testSuiteList.data
-          (testSuiteList.data.length > 0 ? (
+        {!isTestSuiteListFetching && testSuiteList?.data &&
+          (testSuiteList?.data.length > 0 ? (
             testSuiteList.data.map((testSuite: TestSuite, index: number) => (
               <TestSuiteListItem key={index} testSuite={testSuite} />
             ))

@@ -7,11 +7,22 @@ export const useGetTestSuiteList = () => {
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_API}/testsuite/lists`
       );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const json_response = await response.json();
-      return json_response.data;
+      if (!json_response || !json_response.data) {
+        throw new Error("Invalid response format");
+      }
+      return json_response;
     },
+    // Optionally add stale time and caching behavior
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+
   });
-  console.log(data, error);
   return {
     isTestSuiteListFetching: isLoading,
     testSuiteList: data,
