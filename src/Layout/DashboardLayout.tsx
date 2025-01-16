@@ -8,8 +8,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useState } from "react";
-import { ChevronLeft } from "lucide-react"
-
+import { ChevronLeft } from "lucide-react";
 
 import routes from "@/pages";
 import Page from "@/components/page/page";
@@ -44,12 +43,12 @@ const DashboardLayout = () => {
       </footer>
     );
   };
-  const comingSoonPagesList = ["Test Plan", "Stress Test"]
+  const comingSoonPagesList = ["Test Plan", "Stress Test"];
 
   // Function to get page name from path
   const getPageNameFromPath = (path: string) => {
-    const route = routes.find(r => r.path === path);
-    return route?.name || 'Unknown Page';
+    const route = routes.find((r) => r.path === path);
+    return route?.name || "Unknown Page";
   };
 
   // Function to go back
@@ -60,7 +59,13 @@ const DashboardLayout = () => {
   // Add this component for the header
   const PageHeader = () => {
     const pageName = getPageNameFromPath(location.pathname);
-    
+    const pathList: string[] = [];
+    console.log(pageName === "Unknown Page");
+    if (pageName === "Unknown Page") {
+      location.pathname.split('/').slice(1).map(path => pathList.push(path))
+    }
+    console.log(pathList)
+
     return (
       <div className="flex items-center gap-4 p-4 bg-background border-b border-mac-light-border dark:border-mac-dark-border">
         <button
@@ -71,13 +76,21 @@ const DashboardLayout = () => {
           <span>Back</span>
         </button>
         <div className="flex items-center gap-2">
-          <span className="text-secondary-label">
-            QA
-          </span>
+          <span className="text-secondary-label">QA</span>
           <span className="text-secondary-label">/</span>
-          <span className="text-primary-label font-medium">
-            {pageName}
-          </span>
+          {pathList.length > 0 ? (
+            pathList.map((path, index) =>
+              index + 1 === location.pathname.split("/").slice(1).length ? (
+                <span className="text-primary-label font-medium">{path}</span>
+              ) : (
+                <span className="text-secondary-label">{path} /</span>
+              )
+            )
+          ) : (
+            <>
+              <span className="text-primary-label font-medium">{pageName}</span>
+            </>
+          )}
         </div>
       </div>
     );
@@ -99,14 +112,14 @@ const DashboardLayout = () => {
                 <PageHeader />
                 <PageContent>
                   <Routes>
-                    <Route path={'/coming_soon'} element={<ComingSoonPage />} />
+                    <Route path={"/coming_soon"} element={<ComingSoonPage />} />
                     {routes.map((page, index) => {
                       if (comingSoonPagesList.includes(page.name)) {
                         return (
-                          <Route 
+                          <Route
                             key={index}
-                            path={page.path} 
-                            element={<Navigate to="/coming_soon" replace />} 
+                            path={page.path}
+                            element={<Navigate to="/coming_soon" replace />}
                           />
                         );
                       }
