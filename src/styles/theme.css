@@ -1,0 +1,174 @@
+:root {
+  /* Shared System/Accent Colors (Theme Independent) */
+  --color-red: #ff3b30;
+  --color-orange: #ff9500;
+  --color-yellow: #ffcc00;
+  --color-green: #34c759;
+  --color-mint: #00c7be;
+  --color-teal: #30b0c7;
+  --color-cyan: #32ade6;
+  --color-blue: #007aff;
+  --color-indigo: #5856d6;
+  --color-purple: #af52de;
+  --color-pink: #ff2d55;
+  --color-brown: #a2845e;
+
+  /* Light theme */
+  --color-primary-light: #3490dc;
+  --color-secondary-light: #38a169;
+  --color-background-light: #ffffff;
+  --color-primary-label-light: #000000;
+  --color-secondary-label-light: #3c3c4399;
+  --color-tertiary-label-light: #3c3c434d;
+  --color-quanternary-label-light: #3c3c432e;
+  --color-card-light: #f7f7f8;
+  --color-sidebar-light: #cecfd2;
+  --color-sidebar-select-light: #b6b7b9;
+  --color-button-light: #007aff;
+
+
+  /* Dark theme */
+  --color-primary-dark: #90cdf4;
+  --color-secondary-dark: #68d391;
+  --color-background-dark: #1a1a17;
+  --color-primary-label-dark: #ffffff;
+  --color-secondary-label-dark: #ebebf599;
+  --color-tertiary-label-dark: #ebebf54d;
+  --color-quanternary-label-dark: #ebebf52e;
+  --color-card-dark: #333537;
+  --color-sidebar-dark: #222428;
+  --color-sidebar-select-dark: #3d3f40;
+  --color-button-dark: #007aff;
+  --color-red-dark: #ff453a;
+  --color-orange-dark: #ff9f0a;
+  --color-yellow-dark: #ffd60a;
+  --color-green-dark: #30d158;
+  --color-mint-dark: #63e6e2;
+  --color-teal-dark: #40e6e2;
+  --color-cyan-dark: #64d2ff;
+  --color-blue-dark: #0a84ff;
+  --color-indigo-dark: #5e5ce6;
+  --color-purple-dark: #bf5af2;
+  --color-pink-dark: #ff375f;
+  --color-brown-dark: #ac8e68;
+
+  /* Orange theme */
+  --color-primary-orange: #FF6B2C;        /* Stronger primary orange */
+  --color-secondary-orange: #FFA07A;      /* Lighter coral */
+  --color-background-orange: #FFF5ED;     /* Soft warm background */
+  --color-primary-label-orange: #1C1917;  /* Near black for contrast */
+  --color-secondary-label-orange: #57534E; /* Warm gray */
+  --color-tertiary-label-orange: #78716C; /* Lighter warm gray */
+  --color-quaternary-label-orange: #FFB088; /* Soft orange highlight */
+  --color-input-orange: #FFFFFF;          /* Clean white for inputs */
+  --color-shadow-orange: rgba(255, 107, 44, 0.15); /* Transparent orange shadow */
+  --color-card-orange: #FFFFFF;           /* White cards for contrast */
+  --color-sidebar-orange: #FFF5ED;        /* Light warm sidebar */
+  --color-sidebar-select-orange: #FFE6D5; /* Slightly darker for selection */
+  --color-button-orange: #FF6B2C;         /* Match primary for consistency */
+
+  --color-red-orange: #ff3b30;
+  --color-orange-orange: #ff9500;
+  --color-yellow-orange: #ffcc00;
+  --color-green-orange: #34c759;
+  --color-mint-orange: #00c7be;
+  --color-teal-orange: #30b0c7;
+  --color-cyan-orange: #32ade6;
+  --color-blue-orange: #007aff;
+  --color-indigo-orange: #5856d6;
+  --color-purple-orange: #af52de;
+  --color-pink-orange: #ff2d55;
+  --color-brown-orange: #a2845e;
+
+  /* Green theme */
+  --color-primary-green: #059669;         /* Rich emerald */
+  --color-secondary-green: #34D399;       /* Bright mint */
+  --color-background-green: #ECFDF5;      /* Soft mint background */
+  --color-primary-label-green: #064E3B;   /* Dark green text */
+  --color-secondary-label-green: #065F46;  /* Medium green text */
+  --color-tertiary-label-green: #047857;   /* Light green text */
+  --color-quaternary-label-green: #10B981; /* Highlight green */
+  --color-input-green: #FFFFFF;           /* Clean white for inputs */
+  --color-shadow-green: rgba(5, 150, 105, 0.15); /* Transparent green shadow */
+  --color-card-green: #FFFFFF;            /* White cards for contrast */
+  --color-sidebar-green: #ECFDF5;         /* Light mint sidebar */
+  --color-sidebar-select-green: #D1FAE5;  /* Slightly darker for selection */
+  --color-button-green: #059669;   
+
+  --color-red-green: #ff3b30;
+  --color-orange-green: #ff9500;
+  --color-yellow-green: #ffcc00;
+  --color-green-green: #34c759;
+  --color-mint-green: #00c7be;
+  --color-teal-green: #30b0c7;
+  --color-cyan-green: #32ade6;
+  --color-blue-green: #007aff;
+  --color-indigo-green: #5856d6;
+  --color-purple-green: #af52de;
+  --color-pink-green: #ff2d55;
+  --color-brown-green: #a2845e;
+}
+
+/* Light theme (default) */
+:root {
+  --color-primary: var(--color-primary-light);
+  --color-secondary: var(--color-secondary-light);
+  --color-background: var(--color-background-light);
+  --color-primary-label: var(--color-primary-label-light);
+  --color-secondary-label: var(--color-secondary-label-light);
+  --color-sidebar: var(--color-sidebar-light);
+  --color-sidebar-select: var(--color-sidebar-select-light);
+  --color-card: var(--color-card-light);
+  --color-button: var(--color-button-light);
+}
+
+/* Dark theme */
+.dark {
+  --color-primary: var(--color-primary-dark);
+  --color-secondary: var(--color-secondary-dark);
+  --color-background: var(--color-background-dark);
+  --color-primary-label: var(--color-primary-label-dark);
+  --color-secondary-label: var(--color-secondary-label-dark);
+  --color-sidebar: var(--color-sidebar-dark);
+  --color-sidebar-select: var(--color-sidebar-select-dark);
+  --color-card: var(--color-card-dark);
+  --color-button: var(--color-button-dark);
+  --color-red: var(--color-red-dark);
+  --color-orange: var(--color-orange-dark);
+  --color-yellow: var(--color-yellow-dark);
+  --color-green: var(--color-green-dark);
+  --color-mint: var(--color-mint-dark);
+  --color-teal: var(--color-teal-dark);
+  --color-cyan: var(--color-cyan-dark);
+  --color-blue: var(--color-blue-dark);
+  --color-indigo: var(--color-indigo-dark);
+  --color-purple: var(--color-purple-dark);
+  --color-pink: var(--color-pink-dark);
+  --color-brown: var(--color-brown-dark);
+}
+
+/* Blue theme */
+.orange {
+  --color-primary: var(--color-primary-orange);
+  --color-secondary: var(--color-secondary-orange);
+  --color-background: var(--color-background-orange);
+  --color-primary-label: var(--color-primary-label-orange);
+  --color-secondary-label: var(--color-secondary-label-orange);
+  --color-sidebar: var(--color-sidebar-orange);
+  --color-sidebar-select: var(--color-sidebar-select-orange);
+  --color-card: var(--color-card-orange);
+  --color-button: var(--color-button-orange);
+}
+
+/* Green theme */
+.green {
+  --color-primary: var(--color-primary-green);
+  --color-secondary: var(--color-secondary-green);
+  --color-background: var(--color-background-green);
+  --color-primary-label: var(--color-primary-label-green);
+  --color-secondary-label: var(--color-secondary-label-green);
+  --color-sidebar: var(--color-sidebar-green);
+  --color-sidebar-select: var(--color-sidebar-select-green);
+  --color-card: var(--color-card-green);
+  --color-button: var(--color-button-green);
+}

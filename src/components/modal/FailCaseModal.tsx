@@ -1,8 +1,6 @@
 import { ModalBody } from "./ModalBody";
 import { ModalFooter } from "./ModalFooter";
-import { FcApproval } from "react-icons/fc";
-import { FcHighPriority } from "react-icons/fc";
-import { BsFillDashCircleFill } from "react-icons/bs";
+import { CircleCheckBig, CircleAlert, CircleMinus } from "lucide-react"
 
 export interface TestCaseFailedInfo {
   id: number;
@@ -33,7 +31,7 @@ type StepProps = {
 const FailStep = ({ stepName, args }: StepProps) => {
   return (
     <div className="flex items-center col-span-3">
-      <FcHighPriority />
+      <CircleAlert />
       <span className="ml-2">
         {stepName}
         {JSON.stringify(args)}
@@ -45,7 +43,7 @@ const FailStep = ({ stepName, args }: StepProps) => {
 const PassStep = ({ stepName, args }: StepProps) => {
   return (
     <div className="flex items-center col-span-3">
-      <FcApproval />
+      <CircleCheckBig />
       <span className="ml-2">
         {stepName}
         {JSON.stringify(args)}
@@ -57,7 +55,7 @@ const PassStep = ({ stepName, args }: StepProps) => {
 const SkipStep = ({ stepName, args }: StepProps) => {
   return (
     <div className="flex items-center col-span-3">
-      <BsFillDashCircleFill />
+      <CircleMinus />
       <span className="ml-2">
         {stepName}
         {JSON.stringify(args)}
@@ -110,14 +108,14 @@ export const FailCaseModal = ({
         aria-hidden="true"
         className={`${
           show ? "" : "hidden"
-        } fixed overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 md:h-full bg-gray-500/40 dark:bg-mac-dark/50`}
+        } fixed overflow-y-auto overflow-x-hidden top-0 right-0 left-0 z-50 p-4 w-full md:inset-0 md:h-full bg-gray-500/40`}
       >
         <div className="relative w-full max-w-max h-full md:h-auto m-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative bg-white border border-black dark:border-gray-700 rounded-lg shadow dark:bg-mac-dark">
+          <div className="relative border border-black dark:border-gray-700 rounded-lg shadow bg-card" >
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold text-primary-label">
                 {data.name}
               </h3>
               <button
@@ -158,9 +156,9 @@ export const FailCaseModal = ({
               <div className="col-span-2">{data.status}</div>
               <div className="col-span-1">Steps:</div>
               <div className="col-span-2 inline-flex">
-                <FcApproval className="mt-1.5 mr-1.5" />- pass
-                <FcHighPriority className="ml-3 mt-1.5 mr-1" />- fail
-                <BsFillDashCircleFill className="ml-3 mt-1.5 mr-1" />- skip
+                <CircleCheckBig className="mx-0.5 mr-1" />- pass
+                <CircleAlert className="ml-3 mx-0.5 mr-1" />- fail
+                <CircleMinus className="ml-3 mx-0.5 mr-1" />- skip
               </div>
               {data.steps.map(function (item) {
                 const stepName = JSON.parse(item)["name"];

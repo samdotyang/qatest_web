@@ -1,4 +1,15 @@
-import { Route, Routes, useRouteError, isRouteErrorResponse } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useRouteError,
+  isRouteErrorResponse,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { useState } from "react";
+import { ChevronLeft } from "lucide-react"
+
 
 import routes from "@/pages";
 import Page from "@/components/page/page";
@@ -7,7 +18,7 @@ import PageAlert from "@/components/pageAlert/pageAlert";
 import Sidebar from "@/components/sidebar/sidebar";
 import { PageAlertContextProvider } from "@/contexts/pageAlertContext";
 import { PageLoaderContextProvider } from "@/contexts/pageLoaderContext";
-import { useState } from "react";
+import ComingSoonPage from "@/pages/coming_soon";
 
 const DashboardLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -15,38 +26,95 @@ const DashboardLayout = () => {
     // localStorage.setItem("sidebar_collapsed", `${collapse}`);
     setSidebarCollapsed(collapse);
   };
+  const location = useLocation(); // Add this to get current path
+  const navigate = useNavigate(); // Add this for navigation
+
   type FooterProps = {
     children: React.ReactNode;
   };
-  
+
   const Footer = ({ children }: FooterProps) => {
     return (
-      <footer className={`text-primary-label dark:text-dark-primary-label bg-mac-light dark:bg-mac-dark flex flex-wrap items-center p-2 ${sidebarCollapsed ? "ml-16": "ml-[310px]"} md:static md:translate-x-0 z-20 -translate-x-full`}>
+      <footer
+        className={`text-primary-label  bg-background flex flex-wrap items-center p-2 ${
+          sidebarCollapsed ? "ml-16" : "ml-[310px]"
+        } md:static md:translate-x-0 z-20 -translate-x-full`}
+      >
         {children}
       </footer>
     );
   };
+  const comingSoonPagesList = ["Test Plan", "Stress Test"]
+
+  // Function to get page name from path
+  const getPageNameFromPath = (path: string) => {
+    const route = routes.find(r => r.path === path);
+    return route?.name || 'Unknown Page';
+  };
+
+  // Function to go back
+  const handleBack = () => {
+    navigate(-1);
+  };
+
+  // Add this component for the header
+  const PageHeader = () => {
+    const pageName = getPageNameFromPath(location.pathname);
+    
+    return (
+      <div className="flex items-center gap-4 p-4 bg-background border-b border-mac-light-border dark:border-mac-dark-border">
+        <button
+          onClick={handleBack}
+          className="flex items-center text-primary-label hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
+        >
+          <ChevronLeft size={20} />
+          <span>Back</span>
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-secondary-label">
+            QA
+          </span>
+          <span className="text-secondary-label">/</span>
+          <span className="text-primary-label font-medium">
+            {pageName}
+          </span>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <PageLoaderContextProvider>
         <PageAlertContextProvider>
           <div className="flex flex-col max-h-screen">
             <PageAlert />
-            <div className="flex w-full flex-row overflow-x-hidden bg-mac-light-background dark:bg-mac-dark-background">
+            <div className="flex w-full flex-row overflow-x-hidden bg-background">
               <Sidebar
                 title={"QA"}
                 collapsed={sidebarCollapsed}
                 setCollapsed={handleSetCollapse}
               />
               <Page>
+                <PageHeader />
                 <PageContent>
                   <Routes>
-                    {routes.map((page, key) => {
+                    <Route path={'/coming_soon'} element={<ComingSoonPage />} />
+                    {routes.map((page, index) => {
+                      if (comingSoonPagesList.includes(page.name)) {
+                        return (
+                          <Route 
+                            key={index}
+                            path={page.path} 
+                            element={<Navigate to="/coming_soon" replace />} 
+                          />
+                        );
+                      }
                       return (
                         <Route
                           path={page.path}
                           element={page.component}
-                          key={key}
+                          key={index}
                           errorElement={<RootBoundary />}
                         />
                       );
@@ -62,7 +130,7 @@ const DashboardLayout = () => {
         </PageAlertContextProvider>
       </PageLoaderContextProvider>
     </>
-  );  
+  );
 };
 
 function RootBoundary() {

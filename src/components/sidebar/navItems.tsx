@@ -4,9 +4,7 @@ import {
   FolderIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
-import { IoSpeedometerOutline } from "react-icons/io5";
-import { RiRobot2Line } from "react-icons/ri";
-import { HiOutlineDocumentReport } from "react-icons/hi";
+import { Bot, Gauge, FileChartColumnIncreasing } from "lucide-react";
 
 // define a NavItem prop
 export type NavItem = {
@@ -39,16 +37,16 @@ export const defaultNavItems: NavItem[] = [
   {
     label: "Report",
     href: "/report",
-    icon: <HiOutlineDocumentReport className="w-6 h-6" />,
+    icon: <FileChartColumnIncreasing className="w-6 h-6" />,
   },
   {
     label: "Automation",
     href: "/automation",
-    icon: <RiRobot2Line className="w-6 h-6" />,
+    icon: <Bot className="w-6 h-6" />,
   },
   {
     label: "Stress Test",
     href: "/stress",
-    icon: <IoSpeedometerOutline className="w-6 h-6" />,
+    icon: <Gauge className="w-6 h-6" />,
   },
 ];

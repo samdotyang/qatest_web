@@ -7,16 +7,15 @@ import {
 } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-
 type ThemeContextProviderProps = {
   children: React.ReactNode;
 };
 
-type DarkTheme = true | false;
+type Theme = 'light' | 'dark' | 'orange' | 'green'; // Add more theme options as needed
 
 type ThemeContextType = {
-  isDarkTheme: DarkTheme;
-  toggleThemeHandler: () => void;
+  currentTheme: Theme;
+  setTheme: (theme: Theme) => void;
 };
 
 export const ThemeContext = createContext<ThemeContextType | null>(null);
@@ -24,49 +23,42 @@ export const ThemeContext = createContext<ThemeContextType | null>(null);
 export function ThemeContextProvider(
   props: ThemeContextProviderProps
 ): ReactElement {
-  const preferDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
-  useEffect(() => initialThemeHandler());
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const [currentTheme, setCurrentTheme] = useState<Theme>('light');
 
+  useEffect(() => {
+    initialThemeHandler();
+  });
   function isLocalStorageEmpty(): boolean {
-    return !localStorage.getItem("isDarkTheme");
+    return !localStorage.getItem("currentTheme");
   }
 
   function initialThemeHandler(): void {
     if (isLocalStorageEmpty()) {
-      localStorage.setItem("isDarkTheme", `${preferDarkMode}`);
-      document.querySelector("body")!.classList.add("dark");
+      const initialTheme: Theme = prefersDarkMode ? 'dark' : 'light';
+      localStorage.setItem("currentTheme", initialTheme);
+      setCurrentTheme(initialTheme);
     } else {
-      const isDarkTheme: boolean = JSON.parse(
-        localStorage.getItem("isDarkTheme")!
-      );
-      isDarkTheme && document!.querySelector("body")!.classList.add("dark");
-      setIsDarkTheme(() => {
-        return isDarkTheme;
-      });
+      const savedTheme = localStorage.getItem("currentTheme") as Theme;
+      setCurrentTheme(savedTheme);
     }
+    applyTheme(currentTheme);
   }
 
-  function toggleThemeHandler(): void {
-    const isDarkTheme: boolean = JSON.parse(
-      localStorage.getItem("isDarkTheme")!
-    );
-    setIsDarkTheme(!isDarkTheme);
-    toggleDarkClassToBody();
-    setValueToLocalStorage();
-  }
-
-  function toggleDarkClassToBody(): void {
-    document!.querySelector("body")!.classList.toggle("dark");
-  }
-
-  function setValueToLocalStorage(): void {
-    localStorage.setItem("isDarkTheme", `${!isDarkTheme}`);
+  function setTheme(newTheme: Theme): void {
+    setCurrentTheme(newTheme);
+    localStorage.setItem("currentTheme", newTheme);
+    applyTheme(newTheme);
     window.dispatchEvent(new Event("theme-changed"));
   }
 
+  function applyTheme(theme: Theme): void {
+    document.documentElement.classList.remove('light', 'dark', 'orange', 'green');
+    document.documentElement.classList.add(theme);
+  }
+
   return (
-    <ThemeContext.Provider value={{ isDarkTheme, toggleThemeHandler }}>
+    <ThemeContext.Provider value={{ currentTheme, setTheme }}>
       {props.children}
     </ThemeContext.Provider>
   );

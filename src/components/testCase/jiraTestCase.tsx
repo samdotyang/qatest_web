@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { FaRegEdit, FaRegSave } from "react-icons/fa";
+import { Pencil, Save } from "lucide-react";
 import JiraTestStep from "@/components/testStep/jiraTestStep";
 import TextEditor from "@components/textEditor/textEditor";
+import TestCaseSearchBar from "./searchBar";
 import Quill from "quill";
 
-const Delta = Quill.import('delta');
+const Delta = Quill.import("delta");
 
 type TestCase = {
   key: string;
@@ -17,6 +18,15 @@ type TestCase = {
   status: string;
   precondition: string;
   testScript: Array<Record<string, string>>;
+};
+
+type JiraTestCaseProps = {
+  caseId: string;
+  onInputChange: (value: string) => void;
+  results: TestCase | null;
+  loading: boolean;
+  error: string | null;
+  onSearch: (caseIs: string) => void;
 };
 
 const filterKeys = [
@@ -31,28 +41,21 @@ const filterKeys = [
   "precondition",
 ];
 
-const JiraTestCase = () => {
-  const [testcase, setTestCase] = useState<TestCase | null>(null);
+const JiraTestCase = ({
+  caseId,
+  onInputChange,
+  results,
+  loading,
+  error,
+  onSearch,
+}: JiraTestCaseProps) => {
   const [isEdit, setIsEdit] = useState(false);
-  const getTestCase = async (caseId: string) => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_BACKEND_API}/testcase/jira/${caseId}`
-    );
-    res.data["data"]["precondition"] = res.data["data"][
-      "precondition"
-    ].replaceAll("<br />", "\n");
-    setTestCase(res.data["data"]);
-  };
 
   const quillRef = useRef();
 
-  useEffect(() => {
-    getTestCase("KQT-T7755");
-  }, []);
-
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setTestCase((prev) => ({ ...prev!, precondition: e.target.value }));
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  //   setTestCase((prev) => ({ ...prev!, precondition: e.target.value }));
+  // };
 
   const textareaRef = useRef(null);
 
@@ -63,29 +66,36 @@ const JiraTestCase = () => {
       // @ts-ignore
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [testcase?.precondition]);
+  }, [results?.precondition]);
 
   return (
     <>
-      <div className="flex flex-col space-y-2 h-full max-h-screen w-full m-auto text-primary-label dark:text-dark-primary-label">
+      <div className="flex flex-col space-y-2 h-full max-h-screen w-full m-auto text-primary-label ">
+        <TestCaseSearchBar
+          caseId={caseId}
+          onInputChange={onInputChange}
+          onButtonClick={onSearch}
+        />
+
         <div className="flex flex-row justify-items-stretch">
-          {testcase && (
+          {results && (
             <p className="text-lg font-bold">
-              {testcase.key}: {testcase.name}
+              {results.key}: {results.name}
             </p>
           )}
           <div className="justify-self-end ml-auto mr-0">
             <button
-              className="bg-blue-500 rounded-md p-2"
+              className="bg-blue-500 rounded-md p-2 disabled:bg-blue-900"
               onClick={() => setIsEdit((prev) => !prev)}
+              disabled
             >
-              {isEdit ? <FaRegSave /> : <FaRegEdit />}
+              {isEdit ? <Save /> : <Pencil />}
             </button>
           </div>
         </div>
-        <div className="bg-mac-light-card dark:bg-mac-dark-card p-2 rounded-lg grid grid-cols-2 gap-y-2 w-2/3">
-          {testcase &&
-            Object.entries(testcase).map(([key, value], index) => {
+        {results && (
+          <div className="bg-card p-2 rounded-lg grid grid-cols-2 gap-y-2 w-2/3">
+            {Object.entries(results).map(([key, value], index) => {
               if (!filterKeys.includes(key)) {
                 return (
                   <React.Fragment key={index}>
@@ -109,11 +119,18 @@ const JiraTestCase = () => {
                 return <React.Fragment key={index}></React.Fragment>;
               }
             })}
-        </div>
+          </div>
+        )}
 
         <span className="text-lg font-bold">PreCondition:</span>
-        {testcase && (
-          <TextEditor ref={quillRef} readOnly={isEdit} defaultValue={testcase.precondition} onSelectionChange={() => {}} onTextChange={() => {}}/>
+        {results && (
+          <TextEditor
+            ref={quillRef}
+            readOnly={!isEdit}
+            defaultValue={results.precondition}
+            onSelectionChange={() => {}}
+            onTextChange={() => {}}
+          />
           // <textarea
           //   ref={textareaRef}
           //   className="resize-y min-h-36 appearance-none bg-transparent rounded-md py-2 px-3 my-auto border border-1 border-gray-500 whitespace-pre-wrap focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -122,10 +139,7 @@ const JiraTestCase = () => {
           // ></textarea>
         )}
         <span className="text-lg font-bold">Steps:</span>
-        <div>
-
-          {testcase && <JiraTestStep steps={testcase.testScript} />}
-        </div>
+        <div>{results && <JiraTestStep steps={results.testScript} />}</div>
       </div>
     </>
   );

@@ -17,7 +17,7 @@ const TestSuiteList = () => {
 
   return (
     <>
-      <div className="space-y-2 text-primary-label dark:text-dark-primary-label">
+      <div className="text-primary-label ">
         <div className="text-lg uppercase font-bold">Test Suite</div>
         {testSuiteListError && (
           <>
@@ -30,7 +30,7 @@ const TestSuiteList = () => {
         {isTestSuiteListFetching && (
           <>
             {Array.from({ length: 10 }).map((_, index) => (
-              <div key={index} className="dark:bg-mac-dark-card rounded-lg p-2">
+              <div key={index} className="bg-card rounded-lg p-2">
                 <Skeleton variant="rectangular" height={20} />
               </div>
             ))}
@@ -42,7 +42,7 @@ const TestSuiteList = () => {
               <TestSuiteListItem key={index} testSuite={testSuite} />
             ))
           ) : (
-            <div className="dark:bg-mac-dark-card rounded-lg p-2">
+            <div className="bg-card rounded-lg p-2">
               <span className="font-bold text-lg">Currently no test suite</span>
             </div>
           ))}

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import TextEditor from "../textEditor/textEditor";
 import Quill from "quill";
 // import { convertTextToDelta } from 'node-quill-converter';
@@ -20,20 +20,21 @@ const JiraTestStepHeader = () => {
 
 const JiraTestStep = ({ steps }: JiraTestStepProps) => {
   const quillref = useRef();
+  const [readOnly, setReadOnly] = useState(true)
   return (
     <>
       <JiraTestStepHeader />
       {steps.map((step, index) => (
         <div 
             key={index}
-            className="grid grid-cols-3 gap-4 bg-mac-light-card dark:bg-mac-dark-card p-2 m-2 rounded-lg text-primary-label dark:text-dark-primary-label"
+            className="grid grid-cols-3 gap-4 bg-card p-2 m-2 rounded-lg text-primary-label "
         >
           {/* <span className="text-wrap whitespace-pre-line">{step["_description"].replaceAll("<br />", "\n")}</span>
       <span>{step["_test_data"]}</span>
       <span>{step["_expected_result"]}</span> */}
           <TextEditor
             ref={quillref}
-            readOnly={false}
+            readOnly={readOnly}
             // defaultValue={step["_description"]}
             defaultValue={step["_description"]}
             onSelectionChange={() => {}}
@@ -41,14 +42,14 @@ const JiraTestStep = ({ steps }: JiraTestStepProps) => {
           />
           <TextEditor
             ref={quillref}
-            readOnly={false}
+            readOnly={readOnly}
             defaultValue={step["_test_data"]}
             onSelectionChange={() => {}}
             onTextChange={() => {}}
           />
           <TextEditor
             ref={quillref}
-            readOnly={false}
+            readOnly={readOnly}
             defaultValue={step["_expected_result"]}
             onSelectionChange={() => {}}
             onTextChange={() => {}}

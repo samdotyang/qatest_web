@@ -1,5 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useGetStressDataList, useGetStressData } from "@/hooks";
+import {
+  Select,
+  SelectItem,
+  SelectContent,
+  SelectValue,
+  SelectTrigger,
+} from "@/components/ui/select";
+import SearchableSelect from "../searchableSelect";
 
 type StressDataProps = {
   stressData?: Record<string, string>;
@@ -32,7 +40,7 @@ export const StressData = ({ stressData }: StressDataProps) => {
           name="url"
           onChange={() => {}}
           defaultValue={stressData ? stressData.url : ""}
-          className="w-full border rounded-lg p-2 dark:bg-mac-dark-card"
+          className="w-full border rounded-lg p-2 bg-card"
         />
       </div>
       <div className="flex">
@@ -41,7 +49,7 @@ export const StressData = ({ stressData }: StressDataProps) => {
           name="method"
           defaultValue={stressData ? stressData.method : "GET"}
           onChange={() => {}}
-          className="w-full border rounded-lg p-2 dark:bg-mac-dark-card"
+          className="w-full border rounded-lg p-2 bg-card"
         >
           <option value="GET">GET</option>
           <option value="POST">POST</option>
@@ -110,14 +118,28 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
     }));
   };
 
+  const handleSelect = (field: string) => (option: Record<string, string>) => {
+    setStressConfig((prev) => ({
+      ...prev,
+      [field]: option.value,
+    }));
+  };
+
   return (
     <>
-      <div className="flex flex-col space-y-2 bg-mac-light-card dark:bg-mac-dark-card shadow-lg rounded-lg max-w-screen-md overflow-hidden p-4 text-primary-label dark:text-dark-primary-label">
+      <div className="flex flex-col space-y-2 bg-card shadow-lg rounded-lg max-w-screen-md overflow-hidden p-4 text-primary-label ">
         <div className="space-y-2">
           <div className="grid grid-cols-3">
             <span className="m-auto">preset data:</span>
+            {/* <Select value={} /> */}
+            <SearchableSelect
+              options={[]}
+              value={""}
+              name="endpoint"
+              onSelect={handleSelect("endpoint")}
+            />
             <select
-              className="col-span-2 block border rounded-lg p-2 dark:bg-mac-dark-card"
+              className="col-span-2 block border rounded-lg p-2 bg-card"
               defaultValue={""}
               name="endpoint"
               onChange={(e) => {
@@ -139,7 +161,7 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
               name="concurrency"
               value={stressConfig.concurrency}
               onChange={handleConfigChange}
-              className="col-span-2 block border rounded-lg p-2 dark:bg-mac-dark-card"
+              className="col-span-2 block border rounded-lg p-2 bg-card"
             />
           </div>
           <div className="grid grid-cols-3">
@@ -149,7 +171,7 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
               name="loop"
               value={stressConfig.loop}
               onChange={handleConfigChange}
-              className="col-span-2 block border rounded-lg p-2 dark:bg-mac-dark-card"
+              className="col-span-2 block border rounded-lg p-2 bg-card"
             />
           </div>
           <div className="grid grid-cols-3">
@@ -177,7 +199,7 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
           </button>
         </div>
       </div>
-      <div className="grow space-y-2 max-w-screen rounded-lg overflow-hidden shadow-lg p-4 bg-mac-light-card dark:bg-mac-dark-card text-primary-label dark:text-dark-primary-label">
+      <div className="grow space-y-2 max-w-screen rounded-lg overflow-hidden shadow-lg p-4 bg-card text-primary-label ">
         <StressData
           stressData={
             !isStressDataFetching &&

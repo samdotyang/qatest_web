@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetTestSuiteList = () => {
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data, error, refetch } = useQuery({
     queryKey: ["getTestSuiteList"],
     queryFn: async () => {
       const response = await fetch(
@@ -24,6 +24,7 @@ export const useGetTestSuiteList = () => {
 
   });
   return {
+    refetch: refetch,
     isTestSuiteListFetching: isLoading,
     testSuiteList: data,
     testSuiteListError: error,

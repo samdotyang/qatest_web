@@ -46,7 +46,7 @@ export const useGetStressData = (filename: string) => {
 };
 
 export const useGetStressHistoryList = () => {
-  const { isFetching, data, error, refetch } = useQuery({
+  const { isFetching, data, error, refetch, isSuccess } = useQuery({
     queryKey: ["stressHistories"],
     queryFn: async () => {
       const response = await fetch(
@@ -54,11 +54,13 @@ export const useGetStressHistoryList = () => {
       );
       return await response.json();
     },
+    select: (d) =>  d.data = d.data || {message: d.message, data: []}
   });
 
   useEffect(() => {
     refetch();
   }, [refetch]);
+
   return {
     isStressHistoryListFetching: isFetching,
     stressHistoryList: data,

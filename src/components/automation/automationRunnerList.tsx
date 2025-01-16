@@ -7,10 +7,12 @@ export const AutomationRunnerList = ({
 }) => {
   return (
     <>
-      {runnerList.length > 0 ? (
-        runnerList.map((item, index) => <AutomationRunnerListItem key={index} item={item}/>)
+      {Object.keys(runnerList).length > 0 ? (
+        Object.entries(runnerList).map(([key, value], index) => (
+          <AutomationRunnerListItem key={index} id={key} item={value} />
+        ))
       ) : (
-        <div>No runner list</div>
+        <div>No Runners Running</div>
       )}
     </>
   );

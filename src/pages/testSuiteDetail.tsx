@@ -17,11 +17,11 @@ const TestSuiteDetailPage = () => {
 
   return (
     <>
-      <div className="space-y-4 p-4 text-primary-label dark:text-dark-primary-label">
+      <div className="space-y-4 p-4 text-primary-label ">
         <div className="space-y-2">
           <label className="text-sm font-medium">TITLE</label>
           <input
-            className="w-full rounded-lg p-2 dark:bg-mac-dark-card bg-mac-light-card"
+            className="w-full rounded-lg p-2 bg-card bg-card"
             placeholder="title"
             name="title"
             value={testSuite.title}
@@ -34,7 +34,7 @@ const TestSuiteDetailPage = () => {
           <label className="text-sm font-medium">FILTER</label>
           <div className="flex gap-2">
             <select
-              className="rounded-lg p-2 dark:bg-mac-dark-card bg-mac-light-card"
+              className="rounded-lg p-2 bg-card bg-card appearance-none"
               name="filterType"
               onChange={(e) => handleFilterChange(e)}
             >
@@ -43,7 +43,7 @@ const TestSuiteDetailPage = () => {
               <option value="caseid">Case Id</option>
             </select>
             <input
-              className="w-full rounded-lg p-2 dark:bg-mac-dark-card bg-mac-light-card"
+              className="w-full rounded-lg p-2 bg-card bg-card"
               placeholder="filter"
               name="filterValue"
               onChange={(e) => handleFilterChange(e)}
@@ -60,7 +60,7 @@ const TestSuiteDetailPage = () => {
         <div className="space-y-2">
           <label className="text-sm font-medium">TEAM</label>
           <input
-            className="w-full rounded-lg p-2 dark:bg-mac-dark-card bg-mac-light-card"
+            className="w-full rounded-lg p-2 bg-card bg-card"
             placeholder="TEAM"
             name="team"
             value={testSuite.team}
@@ -88,7 +88,7 @@ const TestSuiteDetailPage = () => {
 
         <div className="m-auto">
           <button
-            className="rounded-lg px-4 py-2 bg-blue-600 text-primary-label dark:text-dark-primary-label"
+            className="rounded-lg px-4 py-2 bg-blue-600 text-primary-label "
             //   onClick={handleSave}
           >
             Save

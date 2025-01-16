@@ -78,10 +78,6 @@ const TextEditor = forwardRef(
           html: defaultValueRef.current,
         });
         quill.setContents(delta);
-
-        console.log(
-          `original value: ${defaultValueRef.current} \n convert data: ${delta}`
-        );
       }
 
       quill.on(Quill.events.TEXT_CHANGE, (...args) => {

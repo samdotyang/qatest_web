@@ -25,7 +25,7 @@ type Option = {
 };
 
 export const useAutomationFeatureList = () => {
-  const { isPending, error, data, isFetching } = useQuery({
+  const { isSuccess, error, data, isFetching } = useQuery({
     queryKey: ["automationFeatureList"],
     queryFn: async () => {
       const response = await fetch(
@@ -38,17 +38,25 @@ export const useAutomationFeatureList = () => {
       );
       return features;
     },
+    staleTime: 60 * 1000 * 5,
   });
-  return {
-    isPending: isPending,
-    featuresFetchError: error,
-    features: data,
-    featuresIsFetching: isFetching,
-  };
+  if (isSuccess) {
+    return {
+      featuresFetchError: error,
+      features: data,
+      featuresIsFetching: isFetching,
+    };
+  } else {
+    return {
+      featuresFetchError: error,
+      features: [],
+      featuresIsFetching: isFetching,
+    };
+  }
 };
 
 export const useAutomationServiceList = () => {
-  const { isPending, error, data, isFetching } = useQuery({
+  const { isSuccess, error, data, isFetching } = useQuery({
     queryKey: ["automationServiceList"],
     queryFn: async () => {
       const response = await fetch(
@@ -61,17 +69,25 @@ export const useAutomationServiceList = () => {
       );
       return services;
     },
+    staleTime: 60 * 1000 * 5,
   });
-  return {
-    isPending: isPending,
-    servicesFetchError: error,
-    services: data,
-    servicesIsFetching: isFetching,
-  };
+  if (isSuccess) {
+    return {
+      servicesFetchError: error,
+      services: data,
+      servicesIsFetching: isFetching,
+    };
+  } else {
+    return {
+      servicesFetchError: error,
+      services: [],
+      servicesIsFetching: isFetching,
+    };
+  }
 };
 
 export const useGetAutomationTestCase = (caseId: string) => {
-  const {isFetching, data, error} = useQuery({
+  const { isFetching, data, error } = useQuery({
     queryKey: [`automationCase_${caseId}`],
     queryFn: async () => {
       const response = await fetch(
@@ -79,11 +95,11 @@ export const useGetAutomationTestCase = (caseId: string) => {
       );
       const json_response = await response.json();
       return json_response;
-    }
+    },
   });
   return {
     automationTestCaseIsFetching: isFetching,
     automationTestCase: data,
     automationTestCaseError: error,
   };
-}
+};

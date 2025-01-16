@@ -8,9 +8,9 @@ const StressHistoryListItem = ({  index, item }: StressHistoryListItemProps) => 
     <>
       <div
         key={`row_${index}`}
-        className={`flex flex-row text-primary-label dark:text-dark-primary-label ${
+        className={`flex flex-row text-primary-label  ${
           index % 2 === 0
-            ? "bg-mac-light-card dark:bg-mac-dark-card"
+            ? "bg-card"
             : "bg-transparent"
         } p-2 rounded-lg`}
       >

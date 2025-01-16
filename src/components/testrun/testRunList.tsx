@@ -21,7 +21,7 @@ const TestRunListHeader = () => {
     "test_run_uuid",
   ];
   return (
-    <div className="flex flex-row text-primary-label dark:text-dark-primary-label p-2">
+    <div className="flex flex-row p-2">
       {header.map((title) => (
         <div className="basis-1/5" key={title}>
           {title.toUpperCase()}
@@ -36,21 +36,22 @@ const TestRunList = ({ rows }: { rows: number }) => {
     useTestRunList(rows);
 
   if (testRunListError) {
-    return <div className="text-primary-lable dark:text-dark-primary-label">Error fetching test runs: {testRunListError.message}</div>;
+    return <div className="text-primary-lable ">Error fetching test runs: {testRunListError.message}</div>;
   }
 
   if (isTestRunListLoading) {
-    return <div className="text-primary-lable dark:text-dark-primary-label">Loading...</div>;
+    return <div className="text-primary-lable ">Loading...</div>;
   }
 
   return (
     <>
-      <div>
+      <div className="text-primary-label">
         <TestRunListHeader />
-        {testRunList.length !== 0 &&
+        {testRunList.length !== 0 ?
           testRunList.map((testrun: TestRun, index: number) => (
             <TestRunListItem key={index} index={index} testrun={testrun} />
-          ))}
+          )) : <span className="p-2">No test runs to show</span>
+        }
       </div>
     </>
   );

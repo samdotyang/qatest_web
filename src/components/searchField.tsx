@@ -18,7 +18,7 @@ export function Search (props: SearchProps) {
         </div>
         <input
           onChange={onChange}
-          className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-mac-light-card dark::bg-mac-dark-card focus:ring-blue-500 focus:border-blue-500 bg-mac-light-card dark:bg-mac-dark-card dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-card focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           type={type}
           placeholder={placeholder}
         />

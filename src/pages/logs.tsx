@@ -39,7 +39,7 @@ const Header = ({
     <Tabs value={value} onChange={handleTabChange}>
       {["Log", "Screenshot", "Case"].map((item, index) => (
         <Tab
-          className="text-primary-label dark:text-dark-primary-label"
+          className="text-primary-label "
           key={index}
           label={item}
         ></Tab>
@@ -112,15 +112,15 @@ const LogView = ({ path, selected }: { path: string; selected: string }) => {
     <>
       {showList && (
         <>
-          <ul className="bg-mac-light-card dark:bg-mac-sidebar-dark p-2 rounded-lg mb-2 text-primary-label dark:text-dark-primary-label">
+          <ul className="bg-card p-2 rounded-lg mb-2 text-primary-label ">
             {logList.map((logName, index) => (
               <li
                 key={index}
                 className={`${
                   logName === selectedLog + ".log"
-                    ? " bg-mac-sidebar-light-select dark:bg-mac-sidebar-dark-select"
+                    ? " bg-sidebar-select"
                     : ""
-                } p-1 rounded-lg hover:bg-mac-sidebar-dark-select hover:cursor-pointer`}
+                } p-1 rounded-lg hover:bg-sidebar-select hover:cursor-pointer`}
                 onClick={() => handleLogSelect(logName)}
               >
                 {logName}
@@ -195,11 +195,11 @@ const ScreenshotView = ({ path }: { path: string }) => {
       {/* No Images to show */}
       {showList && (
         <>
-          <ul className="bg-mac-light-card dark:bg-mac-sidebar-dark p-2 rounded-lg mb-2 text-primary-label dark:text-dark-primary-label">
+          <ul className="bg-card p-2 rounded-lg mb-2 text-primary-label ">
             {imageList.map((image, index) => (
               <li
                 key={index}
-                className={`${selectedImage === image.split('.')[0] ? "bg-mac-sidebar-light-select dark:bg-mac-sidebar-dark-select": ""} p-1 rounded-lg hover:bg-mac-sidebar-dark-select hover:cursor-pointer`}
+                className={`${selectedImage === image.split('.')[0] ? "bg-sidebar-select": ""} p-1 rounded-lg hover:bg-sidebar-select hover:cursor-pointer`}
                 onClick={() => handleImageSelect(image)}
               >
                 {image}

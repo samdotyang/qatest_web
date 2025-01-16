@@ -7,7 +7,7 @@ type StressHistoryListItemProps = {
   
   const StressHistoryListHeader = () => {
     return (
-      <div className="flex flex-row text-primary-label dark:text-dark-primary-label p-2">
+      <div className="flex flex-row text-primary-label  p-2">
         <div className="basis-1/2">Endpoint</div>
         <div className="basis-1/4">Requests</div>
         <div className="basis-1/4">Fails</div>
@@ -33,7 +33,7 @@ type StressHistoryListItemProps = {
               ))}
           </>
         ) : (
-          <div className="text-primary-label dark:text-dark-primary-label m-auto">No history</div>
+          <div className="text-primary-label  m-auto">No history</div>
         )}
       </>
     );

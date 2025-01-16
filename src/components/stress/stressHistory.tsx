@@ -17,7 +17,7 @@ const StressHistory = () => {
 
   return (
     <>
-      <div className="text-primary-label dark:text-dark-primary-label text-lg font-bold">
+      <div className="text-primary-label  text-lg font-bold">
         History (only 10 records will be show):
       </div>
       {!isStressHistoryListFetching && !stressHistoryListError && (

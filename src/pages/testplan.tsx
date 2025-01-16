@@ -1,6 +1,7 @@
 import TextEditor from "@/components/textEditor/textEditor";
 import { useRef, useState } from "react";
 import Quill from "quill";
+import { redirect } from "react-router-dom";
 
 
 const Delta = Quill.import("delta");
@@ -8,7 +9,7 @@ const Delta = Quill.import("delta");
 const TestPlanPage = () => {
   const ref = useRef();
   return (
-    <div className="text-primary-label dark:text-dark-primary-label border border-1 dark:border-gray-400">
+    <div className="text-primary-label  border border-1 dark:border-gray-400">
       <TextEditor
         readOnly={false}
         ref={ref}
