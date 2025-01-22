@@ -6,6 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import SidebarFooter from "./sidebarFooter";
 import { ThemeSwitcher } from "../themeSwitcher";
+import { NavLink } from "react-router-dom";
 
 // add NavItem prop to component prop
 type Props = {
@@ -25,8 +26,7 @@ const Sidebar = ({
   return (
     <div
       className={classNames({
-        "shrink-0 bg-sidebar text-primary-label  h-full":
-          true,
+        "shrink-0 bg-sidebar text-primary-label  h-full": true,
         "fixed md:static md:translate-x-0 z-20": true,
         "transition-all duration-300 ease-in-out": true,
         "w-[310px]": !collapsed,
@@ -67,19 +67,29 @@ const Sidebar = ({
                 <li
                   key={index}
                   className={classNames({
-                    "flex font-semibold text-sm text-primary-label ":
-                      true,
-                    "hover:bg-sidebar-select":
-                      true, //colors
+                    "flex font-semibold text-sm text-primary-label ": true,
+                    "hover:bg-sidebar-select": true, //colors
                     "transition-colors duration-300": true, //animation
                     "rounded-md p-2 mx-3 gap-4": !collapsed,
-                    "rounded-full p-2 mx-3 w-10 h-10": collapsed,
+                    "rounded-full p-2 mx-3": collapsed,
                   })}
                 >
-                  <a href={item.href} className="flex gap-2 w-full h-full">
-                    {item.icon}{" "}
-                    <span className="mt-auto">{!collapsed && item.label}</span>
-                  </a>
+                  <NavLink
+                    to={item.href}
+                    className={({ isActive }) =>
+                      classNames({
+                        "flex gap-2 w-full h-full": true,
+                        "bg-sidebar-select": isActive,
+                        "rounded-md p-2 mx-3 gap-4": !collapsed,
+                        "rounded-full": collapsed,
+                      })
+                    }
+                  >
+                    {item.icon}
+                    {!collapsed && (
+                      <span className="mt-auto">{item.label}</span>
+                    )}
+                  </NavLink>
                 </li>
               );
             })}

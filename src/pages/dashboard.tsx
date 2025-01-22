@@ -1,23 +1,89 @@
-import { Card } from "@/components/ui/card";
-import { useAutomationCaseCount } from "@/hooks";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { QABarChart } from "@/components/ui/chart";
 
+import { useAutomationCaseCount, useGetPassRate } from "@/hooks";
+import { Loader2 } from "lucide-react";
 
+type StatCardProps = {
+  title: string;
+  value: string;
+  isLoading: boolean;
+};
+
+type ChartSectionProps = {
+  title: string;
+  data: Array<any>;
+};
+
+const StatCard = ({ title, value, isLoading }: StatCardProps) => (
+  <Card className="bg-card backdrop-blur-sm">
+    <CardContent className="pt-6">
+      <div className="flex flex-col space-y-1">
+        <p className="text-sm text-muted-foreground">{title}</p>
+        {isLoading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <p className="text-2xl font-bold">{value}</p>
+        )}
+      </div>
+    </CardContent>
+  </Card>
+);
+
+const ChartSection = ({ title, data }: ChartSectionProps) => (
+  <Card className="bg-card backdrop-blur-sm">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-medium">{title}</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <QABarChart title={title} data={data} />
+    </CardContent>
+  </Card>
+);
 
 const Dashboard = () => {
-  const { isFetching, automationCaseCount, error } = useAutomationCaseCount();
+  const { isPending, isFetching, automationCaseCount, error } = useAutomationCaseCount();
+  const { passRate: operationPassRate, isPassRateLoading: isOperationPassRateLoading, passRateError: operationPassRateError } = useGetPassRate("operation");
+  const { passRate: dailyPassRate, isPassRateLoading: isDailyPassRateLoading, passRateError: dailyPassRateError } = useGetPassRate();
+
+  const totalCases = error ? 0 : automationCaseCount?.data ?? 0;
+  const isLoading = isPending || isFetching;
+
   return (
     <>
-      <div className="flex flex-row flex-wrap">
-        <Card>
-          {!isFetching && (
-            <div className="flex flex-col items-center text-primary-label">
-              <div className="text-4xl h-32 w-32 mx-auto flex items-center justify-center font-bold">
-                {error ? 0 : automationCaseCount.data}
-              </div>
-              <div className="m-auto p-2">Automation Cases</div>
-            </div>
-          )}
-        </Card>
+      <div className="space-y-8 text-primary-label">
+        <div className="grid gap-4 md:grid-cols-3">
+          <StatCard
+            title="Total Automation Cases"
+            value={`${totalCases} cases`}
+            isLoading={isLoading}
+          />
+          <StatCard title="Pass Rate (TO_BE_REPLCED)" value="85.5%" isLoading={isLoading} />
+          <StatCard
+            title="Total Executions (TO_BE_REPLACED)"
+            value="1,234"
+            isLoading={isLoading}
+          />
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Regression Analysis</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <ChartSection title="Operation" data={!isOperationPassRateLoading ? [...operationPassRate.data].reverse() : []} />
+            <ChartSection title="Product" data={!isOperationPassRateLoading ? [...operationPassRate.data].reverse() : []} />
+            <ChartSection title="B2C" data={!isOperationPassRateLoading ? [...operationPassRate.data].reverse() : []} />
+          </div>
+        </div>
+        {/* Trends Section */}
+        <div>
+          <Card className="bg-card backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Daily Test Execution Trends</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <QABarChart data={!isDailyPassRateLoading ? [...dailyPassRate.data].reverse() : []} title="Test Execution Trends" />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </>
   );

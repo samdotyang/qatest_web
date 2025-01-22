@@ -39,7 +39,7 @@ const TestSuiteList = () => {
           <div className="text-lg uppercase font-bold">Test Suite</div>
           <button
             onClick={() => setIsModalOpen(true)}
-            className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2"
+            className="bg-blue hover:bg-blue-700 text-white rounded-lg px-4 py-2"
           >
             Create Test Suite
           </button>

@@ -10,6 +10,10 @@ export const useAutomationCaseCount = () => {
       const json_response = await response.json();
       return json_response;
     },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 30 * 60 * 1000, // 30 minutes
+    refetchOnMount: false,     // Don't refetch when component mounts
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   });
   return {
     isPending: isPending,

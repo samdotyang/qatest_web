@@ -7,9 +7,18 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { ChevronLeft } from "lucide-react";
+import {
+  motion,
+  LazyMotion,
+  domAnimation,
+} from "motion/react";
 
+import {
+  PageSkeleton,
+  DelayedLoading,
+} from "@/components/ui/loading";
 import routes from "@/pages";
 import Page from "@/components/page/page";
 import { PageContent } from "@/components/page/pageContent";
@@ -19,30 +28,42 @@ import { PageAlertContextProvider } from "@/contexts/pageAlertContext";
 import { PageLoaderContextProvider } from "@/contexts/pageLoaderContext";
 import ComingSoonPage from "@/pages/coming_soon";
 
+type FooterProps = {
+  children: React.ReactNode;
+  sidebarCollapsed: boolean;
+};
+
+const Footer = ({ children, sidebarCollapsed }: FooterProps) => {
+  return (
+    <footer
+      className={`text-primary-label  bg-background flex flex-wrap items-center p-2 ${
+        sidebarCollapsed ? "ml-16" : "ml-[310px]"
+      } md:static md:translate-x-0 z-20 -translate-x-full`}
+    >
+      {children}
+    </footer>
+  );
+};
+
 const DashboardLayout = () => {
+  // Props
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const handleSetCollapse = (collapse: boolean) => {
-    // localStorage.setItem("sidebar_collapsed", `${collapse}`);
-    setSidebarCollapsed(collapse);
-  };
+  const [isPageLoading, setIsPageLoading] = useState(false);
   const location = useLocation(); // Add this to get current path
   const navigate = useNavigate(); // Add this for navigation
 
-  type FooterProps = {
-    children: React.ReactNode;
+  useEffect(() => {
+    setIsPageLoading(true);
+    const timer = setTimeout(() => {
+      setIsPageLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
+  const handleSetCollapse = (collapse: boolean) => {
+    setSidebarCollapsed(collapse);
   };
 
-  const Footer = ({ children }: FooterProps) => {
-    return (
-      <footer
-        className={`text-primary-label  bg-background flex flex-wrap items-center p-2 ${
-          sidebarCollapsed ? "ml-16" : "ml-[310px]"
-        } md:static md:translate-x-0 z-20 -translate-x-full`}
-      >
-        {children}
-      </footer>
-    );
-  };
   const comingSoonPagesList = ["Test Plan", "Stress Test"];
 
   // Function to get page name from path
@@ -62,9 +83,12 @@ const DashboardLayout = () => {
     const pathList: string[] = [];
     console.log(pageName === "Unknown Page");
     if (pageName === "Unknown Page") {
-      location.pathname.split('/').slice(1).map(path => pathList.push(path))
+      location.pathname
+        .split("/")
+        .slice(1)
+        .map((path) => pathList.push(path));
     }
-    console.log(pathList)
+    console.log(pathList);
 
     return (
       <div className="flex items-center gap-4 p-4 bg-background border-b border-mac-light-border dark:border-mac-dark-border">
@@ -111,28 +135,56 @@ const DashboardLayout = () => {
               <Page>
                 <PageHeader />
                 <PageContent>
-                  <Routes>
-                    <Route path={"/coming_soon"} element={<ComingSoonPage />} />
-                    {routes.map((page, index) => {
-                      if (comingSoonPagesList.includes(page.name)) {
-                        return (
-                          <Route
-                            key={index}
-                            path={page.path}
-                            element={<Navigate to="/coming_soon" replace />}
-                          />
-                        );
-                      }
-                      return (
-                        <Route
-                          path={page.path}
-                          element={page.component}
-                          key={index}
-                          errorElement={<RootBoundary />}
-                        />
-                      );
-                    })}
-                  </Routes>
+                  <LazyMotion features={domAnimation}>
+                    {/* <AnimatePresence mode="wait"> */}
+                      <>
+                        <motion.div
+                          key={location.pathname}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -20 }}
+                          transition={{ duration: 0.2 }}
+                          className="h-full"
+                        >
+                          {isPageLoading ? (
+                            <DelayedLoading />
+                          ) : (
+                            <Routes>
+                              <Route
+                                path={"/coming_soon"}
+                                element={<ComingSoonPage />}
+                              />
+                              {routes.map((page, index) => {
+                                if (comingSoonPagesList.includes(page.name)) {
+                                  return (
+                                    <Route
+                                      key={index}
+                                      path={page.path}
+                                      element={
+                                        <Navigate to="/coming_soon" replace />
+                                      }
+                                    />
+                                  );
+                                }
+                                return (
+                                  <Route
+                                    path={page.path}
+                                    element={
+                                      <Suspense fallback={<PageSkeleton />}>
+                                        {page.component}
+                                      </Suspense>
+                                    }
+                                    key={index}
+                                    errorElement={<RootBoundary />}
+                                  />
+                                );
+                              })}
+                            </Routes>
+                          )}
+                        </motion.div>
+                      </>
+                    {/* </AnimatePresence> */}
+                  </LazyMotion>
                 </PageContent>
               </Page>
             </div>

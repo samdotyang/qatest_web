@@ -1,6 +1,7 @@
 import Stress from "./stress";
 import Home from "./home";
 import AutomationDashboard from "./automation";
+import AutomationRunnerPage from "./automationRunner";
 import TestCasePage from "./testcase";
 import TestPlanPage from "./testplan";
 import Dashboard from "./dashboard";
@@ -28,6 +29,11 @@ const PageList = [
     name: "Automation",
     path: "/automation",
     component: <AutomationDashboard />,
+  },
+  {
+    name: "Automation",
+    path: "/automation/:automationId",
+    component: <AutomationRunnerPage />,
   },
   {
     name: "Test Case",

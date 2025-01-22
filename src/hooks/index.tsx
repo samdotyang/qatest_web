@@ -16,6 +16,8 @@ import { useTestRunList, useTestRunDetail } from "./testrun";
 
 import { useGetTestSuiteList } from "./testSuite";
 
+import { useGetPassRate } from "./report";
+
 export {
   // Automation
   useAutomationCaseCount,
@@ -35,4 +37,7 @@ export {
 
   //testsuite
   useGetTestSuiteList,
+
+  //report
+  useGetPassRate,
 };

@@ -42,6 +42,9 @@ const TestCasePage = () => {
       const res = await axios.get(
         `${process.env.REACT_APP_BACKEND_API}/testcase/automation/${caseId}`
       );
+      if (!res.data.data) {
+        alert("No cases found")
+      }
       setAutomationTestCase((prev) => ({
         ...prev,
         results: res.data.data,
@@ -93,11 +96,11 @@ const TestCasePage = () => {
     }
   };
 
-  const handleAutomationTestCaseSearch = (caseId: string) => {
+  const handleAutomationTestCaseSearch = async (caseId: string) => {
     getAutomationTestCase(caseId);
   };
 
-  const handleJiraTestCaseSearch = (caseId: string) => {
+  const handleJiraTestCaseSearch = async (caseId: string) => {
     getJiraTestCase(caseId);
   };
 

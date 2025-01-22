@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { Pencil, Save } from "lucide-react";
 import JiraTestStep from "@/components/testStep/jiraTestStep";
 import TextEditor from "@components/textEditor/textEditor";
@@ -26,7 +25,7 @@ type JiraTestCaseProps = {
   results: TestCase | null;
   loading: boolean;
   error: string | null;
-  onSearch: (caseIs: string) => void;
+  onSearch: (caseIs: string) => Promise<void>;
 };
 
 const filterKeys = [

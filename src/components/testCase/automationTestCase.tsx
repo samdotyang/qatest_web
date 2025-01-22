@@ -7,7 +7,7 @@ type AutomationTestCaseProps = {
   results: Record<string, any> | null;
   loading: boolean;
   error: string | null;
-  onSearch: (caseIs: string) => void;
+  onSearch: (caseIs: string) => Promise<void>;
 };
 
 const AutomationTestCase = ({
@@ -47,7 +47,7 @@ const AutomationTestCase = ({
       )}
 
       <div className="text-primary-label  text-lg font-bold">Test Steps:</div>
-      {loading && <div>Loading...</div>}
+      {loading && <div className="text-primary-label">Loading...</div>}
       {error && <div className="text-red">{error}</div>}
       <div className="flex flex-col space-y-2 overflow-y-hidden hover:overflow-y-auto text-primary-label ">
         {results &&

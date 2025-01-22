@@ -6,7 +6,8 @@ export const useGetAutomationRunnerList = () => {
         queryFn: async() => {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/automation/runners`)
             const json_response = await response.json()
-            return json_response;
+            return json_response
+            ;
         },
         refetchInterval: 60 * 1000, // refetch every minute
     })

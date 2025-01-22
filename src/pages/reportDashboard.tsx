@@ -11,16 +11,16 @@ import { generateRandomHexColor } from "@/lib/utils";
 const ReportDashboardPage = () => {
   const params = useParams();
   const lineColor = [generateRandomHexColor(), generateRandomHexColor()]
-  // const data = [
-  //   { date: "A", regression: 100, daily: 80},
-  //   { date: "B", regression: 50, daily: 100 },
-  //   { date: "C", regression: 95, daily: 40 },
-  //   { date: "D", regression: 30, daily: 70 },
-  //   { date: "E", regression: 60, daily: 20 },
-  //   { date: "F", regression: 45, daily: 10 },
-  //   { date: "G", regression: 0, daily: 0 },
-  // ];
-  const data: Array<Record<string, any>> = []
+  const data = [
+    { date: "A", pass: 100, fail: 80},
+    { date: "B", regression: 50, daily: 100 },
+    { date: "C", regression: 95, daily: 40 },
+    { date: "D", regression: 30, daily: 70 },
+    { date: "E", regression: 60, daily: 20 },
+    { date: "F", regression: 45, daily: 10 },
+    { date: "G", regression: 0, daily: 0 },
+  ];
+  // const data: Array<Record<string, any>> = []
 
   return (
     <>

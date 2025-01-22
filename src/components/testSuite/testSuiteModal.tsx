@@ -151,7 +151,7 @@ const TestSuiteModal = ({
           <div className="space-y-2">
             <label className="text-sm font-medium">TITLE</label>
             <input
-              className="w-full rounded-lg p-2 bg-card bg-card"
+              className="w-full rounded-lg p-2 bg-card"
               placeholder="title"
               name="title"
               value={formData.title}
@@ -163,7 +163,7 @@ const TestSuiteModal = ({
             <label className="text-sm font-medium">FILTER</label>
             <div className="flex gap-2">
               <select
-                className="rounded-lg p-2 bg-card bg-card appearance-none"
+                className="rounded-lg p-2 bg-card appearance-none"
                 name="filterType"
                 onChange={handleFilterChange}
               >
@@ -171,7 +171,7 @@ const TestSuiteModal = ({
                 <option value="caseid">Case Id</option>
               </select>
               <input
-                className="w-full rounded-lg p-2 bg-card bg-card"
+                className="w-full rounded-lg p-2 bg-card"
                 placeholder="filter"
                 name="filterValue"
                 onChange={handleFilterChange}
@@ -179,7 +179,7 @@ const TestSuiteModal = ({
               />
               <button
                 onClick={fetchFilteredCases}
-                className="bg-blue-600 hover:bg-blue-700 rounded-lg shrink-0 p-2 text-white"
+                className="bg-blue rounded-lg shrink-0 p-2 text-white"
               >
                 Apply Filter
               </button>
@@ -189,7 +189,7 @@ const TestSuiteModal = ({
           <div className="space-y-2">
             <label className="text-sm font-medium">TEAM</label>
             <input
-              className="w-full rounded-lg p-2 bg-card bg-card"
+              className="w-full rounded-lg p-2 bg-card"
               placeholder="TEAM"
               name="team"
               value={formData.team}
@@ -286,7 +286,7 @@ const TestSuiteModal = ({
               Cancel
             </button>
             <button
-              className="rounded-lg px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white"
+              className="rounded-lg px-4 py-2 bg-blue text-white"
               onClick={handleSave}
             >
               {testSuite ? "Save Changes" : "Create"}

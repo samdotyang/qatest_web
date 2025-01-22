@@ -55,27 +55,6 @@ const AutomationDashboard = () => {
     priority: "None",
   });
 
-  useEffect(() => {
-    if (socket) {
-      socket.onopen = () => setContent("");
-
-      socket.onmessage = (event) => {
-        if (messageRef.current) {
-          messageRef.current.textContent += `${event.data}\n`;
-        }
-        setContent((prev) => prev + `${event.data}\n`);
-      };
-
-      socket.onerror = (error) => {
-        pageAlertContext.setAlert(`${error}`, "error");
-      };
-    }
-
-    return () => {
-      socket?.close();
-    };
-  }, [socket, messageRef, pageAlertContext]);
-
   const handleSelect = (field: string) => (option: Record<string, string>) => {
     setAutomationConfig((prev) => ({
       ...prev,
@@ -86,14 +65,9 @@ const AutomationDashboard = () => {
   const sendConfig = async () => {
     setIsRunning(true);
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.REACT_APP_BACKEND_API}/automation/run`,
         automationConfig
-      );
-      setSocket(
-        new (window.WebSocket as new (url: string) => WebSocket)(
-          `${process.env.REACT_APP_BACKEND_API}/terminal/ws/${response.data.data.request_id}`
-        )
       );
     } catch (error) {
       pageAlertContext.setAlert(`${error}`, "error");
@@ -289,10 +263,6 @@ const AutomationDashboard = () => {
               <AutomationRunnerList runnerList={automationRunnerList.data} />
             )}
           </div>
-        </div>
-        {/* Terminal  */}
-        <div className="w-full">
-          <Terminal content={content} />
         </div>
       </div>
     </>

@@ -6,7 +6,6 @@ import {
   CheckCircle,
   XCircle,
   Clock,
-  Filter,
 } from "lucide-react";
 
 import { useTestRunDetail } from "@/hooks";
@@ -15,6 +14,7 @@ import { Search } from "@/components/searchField";
 import { QAPieChart } from "@/components/ui/chart";
 import { FailCaseModal } from "@/components/modal";
 import { calculateTime } from "@/lib/utils";
+import StatusFilter from "@/components/statusFilter";
 
 type CaseExecution = {
   description: string;
@@ -61,41 +61,6 @@ const sort_object = (data: TestExecution, filterString: string) => {
   };
 };
 
-const StatusFilter = ({
-  selectedStatus,
-  onChange,
-}: {
-  selectedStatus: string;
-  onChange: (status: string) => void;
-}) => {
-  const statuses = [
-    { label: "All", value: "all" },
-    { label: "Pass", value: "Pass" },
-    { label: "Fail", value: "Fail" },
-  ];
-
-  return (
-    <div className="flex items-center space-x-2">
-      <Filter className="w-4 h-4 text-gray-500" />
-      <div className="flex space-x-1">
-        {statuses.map((status) => (
-          <button
-            key={status.value}
-            onClick={() => onChange(status.value)}
-            className={`px-3 py-1 rounded-full text-sm ${
-              selectedStatus === status.value
-                ? "bg-blue text-primary-label"
-                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-            }`}
-          >
-            {status.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
-
 const TestRunDetailPage = () => {
   const { testRunId } = useParams();
   const { testRunDetail, isTestRunDetailLoading, testRunDetailError } =
@@ -108,6 +73,13 @@ const TestRunDetailPage = () => {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [collapsedFeatures, setCollapsedFeatures] = useState(new Set<string>());
   const [statusFilter, setStatusFilter] = useState("all");
+
+  const statuses = [
+    { label: "All", value: "all" },
+    { label: "Pass", value: "Pass" },
+    { label: "Fail", value: "Fail" },
+  ];
+
 
   // Filter tests based on status
   const getFilteredTests = (tests: CaseExecution[]) => {
@@ -197,6 +169,7 @@ const TestRunDetailPage = () => {
             
           </div>
           <StatusFilter
+              labels={statuses}
               selectedStatus={statusFilter}
               onChange={setStatusFilter}
             />
