@@ -39,6 +39,7 @@ const QABarChart = ({ title, data }: QABarChartProps) => {
           <Legend />
 
           <Bar
+            barSize={40}
             dataKey="pass_rate"
             fill="#0a84ff"
             activeBar={<Rectangle fill="pink" stroke="blue" />}

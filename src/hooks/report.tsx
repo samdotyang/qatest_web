@@ -13,7 +13,7 @@ export const useGetPassRate = (team?: string, days?: number, type?: string) => {
     searchParams.append("days", `${days}`);
   }
   if (type) {
-    if (type in ["regression", "daily"]) {
+    if (["regression", "daily"].includes(type)) {
       switch (type) {
         case "regression":
           searchParams.append("is_regression", "true");

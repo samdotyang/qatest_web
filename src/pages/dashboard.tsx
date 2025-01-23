@@ -43,8 +43,13 @@ const ChartSection = ({ title, data }: ChartSectionProps) => (
 
 const Dashboard = () => {
   const { isPending, isFetching, automationCaseCount, error } = useAutomationCaseCount();
-  const { passRate: operationPassRate, isPassRateLoading: isOperationPassRateLoading, passRateError: operationPassRateError } = useGetPassRate("operation");
-  const { passRate: dailyPassRate, isPassRateLoading: isDailyPassRateLoading, passRateError: dailyPassRateError } = useGetPassRate();
+  const { passRate: operationRegressionPassRate, isPassRateLoading: isOperationRegressionPassRateLoading, passRateError: operationPassRateError } = useGetPassRate("operation", undefined, "regression");
+  const { passRate: productRegressionPassRate, isPassRateLoading: isProductRegressionPassRateLoading, passRateError: productRegressionPassRateError } = useGetPassRate("product", undefined, "regression");
+  const { passRate: b2cRegressionPassRate, isPassRateLoading: isB2CRegressionPassRateLoading, passRateError: b2cRegressionPassRateError } = useGetPassRate("b2c", undefined, "regression");
+  const { passRate: operationDailyPassRate, isPassRateLoading: isOperationDailyPassRateLoading, passRateError: operationDailyPassRateError } = useGetPassRate("operation", undefined, "daily");
+  const { passRate: productDailyPassRate, isPassRateLoading: isProductDailyPassRateLoading, passRateError: productDailyPassRateError } = useGetPassRate("product", undefined, "daily");
+  const { passRate: b2cDailyPassRate, isPassRateLoading: isB2CDailyPassRateLoading, passRateError: b2cDailyPassRateError } = useGetPassRate("b2c", undefined, "daily");
+  const { passRate: dailyPassRate, isPassRateLoading: isDailyPassRateLoading, passRateError: dailyPassRateError } = useGetPassRate(undefined, undefined, "daily");
 
   const totalCases = error ? 0 : automationCaseCount?.data ?? 0;
   const isLoading = isPending || isFetching;
@@ -68,9 +73,17 @@ const Dashboard = () => {
         <div>
           <h2 className="text-lg font-semibold mb-4">Regression Analysis</h2>
           <div className="grid gap-4 md:grid-cols-3">
-            <ChartSection title="Operation" data={!isOperationPassRateLoading ? [...operationPassRate.data].reverse() : []} />
-            <ChartSection title="Product" data={!isOperationPassRateLoading ? [...operationPassRate.data].reverse() : []} />
-            <ChartSection title="B2C" data={!isOperationPassRateLoading ? [...operationPassRate.data].reverse() : []} />
+            <ChartSection title="Operation" data={!isOperationRegressionPassRateLoading ? [...operationRegressionPassRate.data].reverse() : []} />
+            <ChartSection title="Product" data={!isProductRegressionPassRateLoading ? [...productRegressionPassRate.data].reverse() : []} />
+            <ChartSection title="B2C" data={!isB2CRegressionPassRateLoading ? [...b2cRegressionPassRate.data].reverse() : []} />
+          </div>
+        </div>
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Daily Analysis</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <ChartSection title="Operation" data={!isOperationDailyPassRateLoading ? [...operationDailyPassRate.data].reverse() : []} />
+            <ChartSection title="Product" data={!isProductDailyPassRateLoading ? [...productDailyPassRate.data].reverse() : []} />
+            <ChartSection title="B2C" data={!isB2CDailyPassRateLoading ? [...b2cDailyPassRate.data].reverse() : []} />
           </div>
         </div>
         {/* Trends Section */}
