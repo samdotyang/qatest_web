@@ -43,6 +43,9 @@ export const useAutomationFeatureList = () => {
       return features;
     },
     staleTime: 60 * 1000 * 5,
+    gcTime: 30 * 60 * 1000, // 30 minutes
+    refetchOnMount: false,     // Don't refetch when component mounts
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   });
   if (isSuccess) {
     return {
@@ -74,6 +77,9 @@ export const useAutomationServiceList = () => {
       return services;
     },
     staleTime: 60 * 1000 * 5,
+    gcTime: 30 * 60 * 1000, // 30 minutes
+    refetchOnMount: false,     // Don't refetch when component mounts
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
   });
   if (isSuccess) {
     return {
@@ -107,3 +113,30 @@ export const useGetAutomationTestCase = (caseId: string) => {
     automationTestCaseError: error,
   };
 };
+
+
+export const useGetAutomationTestCaseCount = (days?: string, team?: string) => {
+  const { isFetching, data, error } = useQuery({
+    queryKey: ["automationTestCaseCount", days, team],
+    queryFn: async () => {
+      const queryParams: Record<string, string> = {};
+      if (days) queryParams.days = days;
+      if (team) queryParams.team = team;
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_API}/testcase/automation/recent?${new URLSearchParams(queryParams)}`
+      );
+      const json_response = await response.json();
+      return json_response;
+    },
+    placeholderData: {data: [{operation: 0, product: 0, b2c: 0}]},
+    staleTime: 60 * 1000 * 5,
+    gcTime: 30 * 60 * 1000, // 30 minutes
+    refetchOnMount: false,     // Don't refetch when component mounts
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+  });
+  return {
+    automationTestCaseCountIsFetching: isFetching,
+    automationTestCaseCount: data,
+    automationTestCaseCountError: error,
+  };
+}

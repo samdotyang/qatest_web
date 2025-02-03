@@ -10,12 +10,31 @@ import {
   Legend,
   ResponsiveContainer,
   Rectangle,
+  TooltipProps,
 } from "recharts";
+import {
+    NameType,
+    ValueType,
+  } from "recharts/types/component/DefaultTooltipContent";
 
 type QABarChartProps = {
   title: string;
   data: Array<any>;
 };
+
+const CustomTooltip: React.FC<TooltipProps<ValueType, NameType>> = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+        return (
+        <div className="custom-tooltip p-2 rounded-lg border bg-gray-400">
+            <p className="label">{label}</p>
+            <p className="intro">Pass Rate</p>
+            <p className="desc">{`${payload[0].name} - ${payload[0].value}%`}</p>
+        </div>
+        );
+    }
+    
+    return null;
+}
 
 const QABarChart = ({ title, data }: QABarChartProps) => {
   return (
@@ -35,7 +54,7 @@ const QABarChart = ({ title, data }: QABarChartProps) => {
         >
           <XAxis dataKey="date" />
           <YAxis tickFormatter={(value) => `${value}%`} />
-          <Tooltip />
+          <Tooltip content={<CustomTooltip />}/>
           <Legend />
 
           <Bar

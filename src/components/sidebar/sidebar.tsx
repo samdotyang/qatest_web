@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import classNames from "classnames";
 import { defaultNavItems, NavItem } from "./navItems";
 import {
@@ -22,6 +23,24 @@ const Sidebar = ({
   navItems = defaultNavItems,
   setCollapsed,
 }: Props) => {
+
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile && !collapsed) {
+        setCollapsed(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Check initial size
+    
+    return () => window.removeEventListener('resize', handleResize);
+  }, [setCollapsed, collapsed]);
+
   const Icon = collapsed ? ChevronDoubleRightIcon : ChevronDoubleLeftIcon;
   return (
     <div
@@ -31,6 +50,8 @@ const Sidebar = ({
         "transition-all duration-300 ease-in-out": true,
         "w-[310px]": !collapsed,
         "w-16": collapsed,
+        "-translate-x-full": isMobile && collapsed,
+        "translate-x-0": !isMobile || !collapsed,
       })}
     >
       <div
@@ -120,6 +141,13 @@ const Sidebar = ({
           </SidebarFooter>
         </div>
       </div>
+      {/* Overlay for mobile */}
+      {!collapsed && isMobile && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-10"
+          onClick={() => setCollapsed(true)}
+        />
+      )}
     </div>
   );
 };

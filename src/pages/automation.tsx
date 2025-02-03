@@ -43,6 +43,7 @@ const AutomationDashboard = () => {
     isAutomationRunnerListFetching,
     automationRunnerList,
     automationRunnerListError,
+    refetchRunnerList,
   } = useGetAutomationRunnerList();
 
   const [automationConfig, setAutomationConfig] = useState({
@@ -69,6 +70,7 @@ const AutomationDashboard = () => {
         `${process.env.REACT_APP_BACKEND_API}/automation/run`,
         automationConfig
       );
+      refetchRunnerList();
     } catch (error) {
       pageAlertContext.setAlert(`${error}`, "error");
     } finally {

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query"
 
 export const useGetAutomationRunnerList = () => {
-    const { isFetching, data, error } = useQuery({
+    const { isFetching, data, error, refetch } = useQuery({
         queryKey: ['getAutomationRunnerList'],
         queryFn: async() => {
             const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/automation/runners`)
@@ -14,6 +14,7 @@ export const useGetAutomationRunnerList = () => {
     return {
         isAutomationRunnerListFetching: isFetching,
         automationRunnerList: data,
-        automationRunnerListError: error
+        automationRunnerListError: error,
+        refetchRunnerList: refetch
     }
 }

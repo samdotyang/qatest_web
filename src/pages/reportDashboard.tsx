@@ -1,60 +1,181 @@
 import TestRunList from "@/components/testrun/testRunList";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { QABarChart } from "@/components/ui/chart";
 
-import { useParams } from "react-router-dom";
+import { useAutomationCaseCount, useGetPassRate } from "@/hooks";
+import { Loader2 } from "lucide-react";
 
-import { QALineChart } from "@/components/ui/chart";
+type StatCardProps = {
+  title: string;
+  value: string;
+  isLoading: boolean;
+};
 
-import { generateRandomHexColor } from "@/lib/utils";
+type ChartSectionProps = {
+  title: string;
+  data: Array<any>;
+  error?: any;
+};
 
+const StatCard = ({ title, value, isLoading }: StatCardProps) => (
+  <Card className="bg-card backdrop-blur-sm">
+    <CardContent className="pt-6">
+      <div className="flex flex-col space-y-1">
+        <p className="text-sm text-muted-foreground">{title}</p>
+        {isLoading ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <p className="text-2xl font-bold">{value}</p>
+        )}
+      </div>
+    </CardContent>
+  </Card>
+);
 
+const ChartSection = ({ title, data, error }: ChartSectionProps) => (
+  <Card className="bg-card backdrop-blur-sm">
+    <CardHeader className="pb-2">
+      <CardTitle className="text-sm font-medium">{title}</CardTitle>
+    </CardHeader>
+    <CardContent>
+      <>
+        {error && error.message}
+        {!error && <QABarChart title={title} data={data} />}
+      </>
+    </CardContent>
+  </Card>
+);
 
 const ReportDashboardPage = () => {
-  const params = useParams();
-  const lineColor = [generateRandomHexColor(), generateRandomHexColor()]
-  const data = [
-    { date: "A", pass: 100, fail: 80},
-    { date: "B", regression: 50, daily: 100 },
-    { date: "C", regression: 95, daily: 40 },
-    { date: "D", regression: 30, daily: 70 },
-    { date: "E", regression: 60, daily: 20 },
-    { date: "F", regression: 45, daily: 10 },
-    { date: "G", regression: 0, daily: 0 },
-  ];
-  // const data: Array<Record<string, any>> = []
+  const {
+    passRate: operationRegressionPassRate,
+    isPassRateLoading: isOperationRegressionPassRateLoading,
+    passRateError: operationRegressionPassRateError,
+  } = useGetPassRate("operation", undefined, "regression");
+  const {
+    passRate: productRegressionPassRate,
+    isPassRateLoading: isProductRegressionPassRateLoading,
+    passRateError: productRegressionPassRateError,
+  } = useGetPassRate("product", undefined, "regression");
+  const {
+    passRate: b2cRegressionPassRate,
+    isPassRateLoading: isB2CRegressionPassRateLoading,
+    passRateError: b2cRegressionPassRateError,
+  } = useGetPassRate("b2c", undefined, "regression");
+  const {
+    passRate: operationDailyPassRate,
+    isPassRateLoading: isOperationDailyPassRateLoading,
+    passRateError: operationDailyPassRateError,
+  } = useGetPassRate("operation", undefined, "daily");
+  const {
+    passRate: productDailyPassRate,
+    isPassRateLoading: isProductDailyPassRateLoading,
+    passRateError: productDailyPassRateError,
+  } = useGetPassRate("product", undefined, "daily");
+  const {
+    passRate: b2cDailyPassRate,
+    isPassRateLoading: isB2CDailyPassRateLoading,
+    passRateError: b2cDailyPassRateError,
+  } = useGetPassRate("b2c", undefined, "daily");
+  const {
+    passRate: dailyPassRate,
+    isPassRateLoading: isDailyPassRateLoading,
+    passRateError: dailyPassRateError,
+  } = useGetPassRate(undefined, undefined, "daily");
 
   return (
     <>
-      <div className="flex flex-col space-y-2">
-        <div className="flex flex-row space-x-2">
-          <div className="w-1/2 h-1/3 max-w-screen-md rounded-lg overflow-hidden shadow-lg p-4 bg-card text-primary-label ">
-            <QALineChart
+      <div className="space-y-8 text-primary-label">
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Regression Analysis</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <ChartSection
               title="Operation"
-              data={data}
-              lineColor={lineColor}
-              xLineDataKey="date"
-              lineDataKey={["regression", "daily"]}
+              data={
+                !isOperationRegressionPassRateLoading
+                  ? [...operationRegressionPassRate.data].reverse()
+                  : []
+              }
+              error={operationRegressionPassRateError}
             />
-          </div>
-          <div className="w-1/2 h-1/3 max-w-screen-md rounded-lg overflow-hidden shadow-lg p-4 bg-card text-primary-label ">
-            <QALineChart
-              title="product"
-              data={data}
-              lineColor={lineColor}
-              xLineDataKey="date"
-              lineDataKey={["regression", "daily"]}
+            <ChartSection
+              title="Product"
+              data={
+                !isProductRegressionPassRateLoading
+                  ? [...productRegressionPassRate.data].reverse()
+                  : []
+              }
+              error={productRegressionPassRateError}
             />
-          </div>
-          <div className="w-1/2 h-1/3 max-w-screen-md rounded-lg overflow-hidden shadow-lg p-4 bg-card text-primary-label ">
-            <QALineChart
-              title="b2c"
-              data={data}
-              lineColor={lineColor}
-              xLineDataKey="date"
-              lineDataKey={["regression", "daily"]}
+            <ChartSection
+              title="B2C"
+              data={
+                !isB2CRegressionPassRateLoading
+                  ? [...b2cRegressionPassRate.data].reverse()
+                  : []
+              }
+              error={b2cRegressionPassRateError}
             />
           </div>
         </div>
+        <div>
+          <h2 className="text-lg font-semibold mb-4">Daily Analysis</h2>
+          <div className="grid gap-4 md:grid-cols-3">
+            <ChartSection
+              title="Operation"
+              data={
+                !isOperationDailyPassRateLoading
+                  ? [...operationDailyPassRate.data].reverse()
+                  : []
+              }
+              error={operationDailyPassRateError}
+            />
+            <ChartSection
+              title="Product"
+              data={
+                !isProductDailyPassRateLoading
+                  ? [...productDailyPassRate.data].reverse()
+                  : []
+              }
+              error={productDailyPassRateError}
+            />
+            <ChartSection
+              title="B2C"
+              data={
+                !isB2CDailyPassRateLoading
+                  ? [...b2cDailyPassRate.data].reverse()
+                  : []
+              }
+              error={b2cDailyPassRateError}
+            />
+          </div>
+        </div>
+        {/* Trends Section */}
+        <div>
+          <Card className="bg-card backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle>Daily Test Execution Trends</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <>
+                {dailyPassRateError && dailyPassRateError.message}
+                {!dailyPassRateError && (
+                  <QABarChart
+                    data={
+                      !isDailyPassRateLoading
+                        ? [...dailyPassRate.data].reverse()
+                        : []
+                    }
+                    title="Test Execution Trends"
+                  />
+                )}
+              </>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="flex flex-col space-y-2">
         <TestRunList rows={8}/>
+      </div>
       </div>
     </>
   );

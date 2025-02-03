@@ -53,19 +53,19 @@
   --color-brown-dark: #ac8e68;
 
   /* Orange theme */
-  --color-primary-orange: #FF6B2C;        /* Stronger primary orange */
-  --color-secondary-orange: #FFA07A;      /* Lighter coral */
-  --color-background-orange: #FFF5ED;     /* Soft warm background */
-  --color-primary-label-orange: #1C1917;  /* Near black for contrast */
-  --color-secondary-label-orange: #57534E; /* Warm gray */
-  --color-tertiary-label-orange: #78716C; /* Lighter warm gray */
-  --color-quaternary-label-orange: #FFB088; /* Soft orange highlight */
-  --color-input-orange: #FFFFFF;          /* Clean white for inputs */
-  --color-shadow-orange: rgba(255, 107, 44, 0.15); /* Transparent orange shadow */
-  --color-card-orange: #FFFFFF;           /* White cards for contrast */
-  --color-sidebar-orange: #FFF5ED;        /* Light warm sidebar */
-  --color-sidebar-select-orange: #FFE6D5; /* Slightly darker for selection */
-  --color-button-orange: #FF6B2C;         /* Match primary for consistency */
+  --color-primary-orange: #FF5722;        /* 強化暖橙紅，類似夕陽色 */
+  --color-secondary-orange: #FF8A65;      /* 加深珊瑚色，更飽和 */
+  --color-background-orange: #FFF3E5;     /* 背景微調為更暖的杏仁白 */
+  --color-primary-label-orange: #1A120B;  /* 暖調深棕取代純黑，更柔和 */
+  --color-secondary-label-orange: #6B4F3A; /* 暖棕灰色，帶紅茶色調 */
+  --color-tertiary-label-orange: #8D735B; /* 淺暖咖啡色，適合輔助文字 */
+  --color-quaternary-label-orange: #FF9F6D; /* 高亮色加強橙黃光感 */
+  --color-input-orange: #FFFFF8;          /* 輸入框使用極淺米白 */
+  --color-shadow-orange: rgba(255, 87, 34, 0.18); /* 陰影加深橙紅透明度 */
+  --color-card-orange: #FFFBF5;           /* 卡片改用暖白避免冰冷感 */
+  --color-sidebar-orange: #FFEFE0;        /* 側欄仿舊紙質暖調 */
+  --color-sidebar-select-orange: #FFD4B2; /* 選中狀態如烤杏仁色 */
+  --color-button-orange: #FF6B3C;         /* 按鈕色融合橙紅與赭石 */
 
   --color-red-orange: #ff3b30;
   --color-orange-orange: #ff9500;

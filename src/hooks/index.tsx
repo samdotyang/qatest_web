@@ -3,6 +3,7 @@ import {
   useAutomationFeatureList,
   useAutomationServiceList,
   useGetAutomationTestCase,
+  useGetAutomationTestCaseCount,
 } from "./testcase";
 import {
   useGetStressDataList,
@@ -25,6 +26,7 @@ export {
   useAutomationServiceList,
   useGetAutomationRunnerList,
   useGetAutomationTestCase,
+  useGetAutomationTestCaseCount,
 
   // Stress
   useGetStressDataList,

@@ -1,8 +1,14 @@
+import { ReactElement } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { QABarChart } from "@/components/ui/chart";
 
-import { useAutomationCaseCount, useGetPassRate } from "@/hooks";
+import {
+  useAutomationCaseCount,
+  useGetPassRate,
+  useGetAutomationTestCaseCount,
+} from "@/hooks";
 import { Loader2 } from "lucide-react";
+import { kMaxLength } from "buffer";
 
 type StatCardProps = {
   title: string;
@@ -10,15 +16,10 @@ type StatCardProps = {
   isLoading: boolean;
 };
 
-type ChartSectionProps = {
-  title: string;
-  data: Array<any>;
-};
-
 const StatCard = ({ title, value, isLoading }: StatCardProps) => (
-  <Card className="bg-card backdrop-blur-sm">
+  <Card className="backdrop-blur-sm">
     <CardContent className="pt-6">
-      <div className="flex flex-col space-y-1">
+      <div className="flex flex-col space-y-1 md:text-wrap">
         <p className="text-sm text-muted-foreground">{title}</p>
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
@@ -30,26 +31,71 @@ const StatCard = ({ title, value, isLoading }: StatCardProps) => (
   </Card>
 );
 
-const ChartSection = ({ title, data }: ChartSectionProps) => (
-  <Card className="bg-card backdrop-blur-sm">
-    <CardHeader className="pb-2">
-      <CardTitle className="text-sm font-medium">{title}</CardTitle>
+type InfoCardProps = {
+  title: string;
+  children: ReactElement;
+  isLoading: boolean;
+};
+
+const InfoCard = ({ title, isLoading, children }: InfoCardProps) => (
+  <Card className="bg-transparent border-none">
+    <CardHeader>
+      <CardTitle>{title}</CardTitle>
     </CardHeader>
-    <CardContent>
-      <QABarChart title={title} data={data} />
+    <CardContent className="bg-card backdrop-blur-sm border rounded-lg shadow-sm p-0">
+      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : children}
+    </CardContent>
+  </Card>
+);
+
+const CasesCountCard = ({
+  isLoading,
+  data,
+  error,
+}: {
+  isLoading: boolean;
+  data: Array<Record<string, number>>;
+  error?: Error | null;
+}) => (
+  <Card className="bg-transparent border-none">
+    <CardHeader>
+      <CardTitle>Cases</CardTitle>
+    </CardHeader>
+    <CardContent className="bg-card backdrop-blur-sm border rounded-lg shadow-sm p-0">
+      {error && error.message}
+      {isLoading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <>
+        {Object.entries(data[0]).map(([k, v], index) => (
+          <div className={`${index + 1 !== Object.keys(data[0]).length ? "border-b" : ""} p-2`}>
+            <div className="grid grid-cols-2">
+              <span className="m-auto uppercase">{k}</span>
+              <span className="m-auto">{v} cases</span>
+            </div>
+          </div>
+        ))}
+        </>
+      )}
     </CardContent>
   </Card>
 );
 
 const Dashboard = () => {
-  const { isPending, isFetching, automationCaseCount, error } = useAutomationCaseCount();
-  const { passRate: operationRegressionPassRate, isPassRateLoading: isOperationRegressionPassRateLoading, passRateError: operationPassRateError } = useGetPassRate("operation", undefined, "regression");
-  const { passRate: productRegressionPassRate, isPassRateLoading: isProductRegressionPassRateLoading, passRateError: productRegressionPassRateError } = useGetPassRate("product", undefined, "regression");
-  const { passRate: b2cRegressionPassRate, isPassRateLoading: isB2CRegressionPassRateLoading, passRateError: b2cRegressionPassRateError } = useGetPassRate("b2c", undefined, "regression");
-  const { passRate: operationDailyPassRate, isPassRateLoading: isOperationDailyPassRateLoading, passRateError: operationDailyPassRateError } = useGetPassRate("operation", undefined, "daily");
-  const { passRate: productDailyPassRate, isPassRateLoading: isProductDailyPassRateLoading, passRateError: productDailyPassRateError } = useGetPassRate("product", undefined, "daily");
-  const { passRate: b2cDailyPassRate, isPassRateLoading: isB2CDailyPassRateLoading, passRateError: b2cDailyPassRateError } = useGetPassRate("b2c", undefined, "daily");
-  const { passRate: dailyPassRate, isPassRateLoading: isDailyPassRateLoading, passRateError: dailyPassRateError } = useGetPassRate(undefined, undefined, "daily");
+  const { isPending, isFetching, automationCaseCount, error } =
+    useAutomationCaseCount();
+
+  const {
+    automationTestCaseCountIsFetching,
+    automationTestCaseCount,
+    automationTestCaseCountError,
+  } = useGetAutomationTestCaseCount();
+
+  const {
+    passRate: dailyPassRate,
+    isPassRateLoading: isDailyPassRateLoading,
+    passRateError: dailyPassRateError,
+  } = useGetPassRate(undefined, undefined, "daily");
 
   const totalCases = error ? 0 : automationCaseCount?.data ?? 0;
   const isLoading = isPending || isFetching;
@@ -63,29 +109,59 @@ const Dashboard = () => {
             value={`${totalCases} cases`}
             isLoading={isLoading}
           />
-          <StatCard title="Pass Rate (TO_BE_REPLCED)" value="85.5%" isLoading={isLoading} />
           <StatCard
-            title="Total Executions (TO_BE_REPLACED)"
-            value="1,234"
+            title="Pass Rate (TO_BE_REPLCED)"
+            value="85.5%"
+            isLoading={isLoading}
+          />
+          <StatCard
+            title="Test Coverage (FAKE DATA)"
+            value="50%"
             isLoading={isLoading}
           />
         </div>
         <div>
-          <h2 className="text-lg font-semibold mb-4">Regression Analysis</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            <ChartSection title="Operation" data={!isOperationRegressionPassRateLoading ? [...operationRegressionPassRate.data].reverse() : []} />
-            <ChartSection title="Product" data={!isProductRegressionPassRateLoading ? [...productRegressionPassRate.data].reverse() : []} />
-            <ChartSection title="B2C" data={!isB2CRegressionPassRateLoading ? [...b2cRegressionPassRate.data].reverse() : []} />
+          <div className="grid gap-4 md:grid-cols-4">
+            <CasesCountCard
+              isLoading={automationTestCaseCountIsFetching}
+              data={automationTestCaseCount ? automationTestCaseCount.data : []}
+              error={automationTestCaseCountError}
+            />
+            <InfoCard title="Recently Added cases" isLoading={isLoading}>
+              <p>Content{/* Placeholder */}</p>
+            </InfoCard>
+            <InfoCard title="Coverage (FAKE DATA)" isLoading={isLoading}>
+              <>
+                <div className="border-b p-2">
+                  <div className="grid grid-cols-2">
+                    <span className="m-auto">OPERATION</span>
+                    <span className="place-self-center">2 %</span>
+                  </div>
+                </div>
+                <div className="border-b p-2">
+                  <div className="grid grid-cols-2">
+                    <span className="m-auto">PRODUCT</span>
+                    <span className="place-self-center">2 %</span>
+                  </div>
+                </div>
+                <div className="p-2">
+                  <div className="grid grid-cols-2">
+                    <span className="m-auto">B2C</span>
+                    <span className="place-self-center">2 %</span>
+                  </div>
+                </div>
+              </>
+            </InfoCard>
+            <InfoCard title="Team Activity" isLoading={isLoading}>
+              <>
+                <div className="border-b p-2">Operation - SOME BIG PROJECT</div>
+                <div className="border-b p-2">Product - SOME BIG PROJECT</div>
+                <div className="p-2">B2C - SOME BIG PROJECT</div>
+              </>
+            </InfoCard>
           </div>
         </div>
-        <div>
-          <h2 className="text-lg font-semibold mb-4">Daily Analysis</h2>
-          <div className="grid gap-4 md:grid-cols-3">
-            <ChartSection title="Operation" data={!isOperationDailyPassRateLoading ? [...operationDailyPassRate.data].reverse() : []} />
-            <ChartSection title="Product" data={!isProductDailyPassRateLoading ? [...productDailyPassRate.data].reverse() : []} />
-            <ChartSection title="B2C" data={!isB2CDailyPassRateLoading ? [...b2cDailyPassRate.data].reverse() : []} />
-          </div>
-        </div>
+        <div>PLACEHOLDER</div>
         {/* Trends Section */}
         <div>
           <Card className="bg-card backdrop-blur-sm">
@@ -93,7 +169,19 @@ const Dashboard = () => {
               <CardTitle>Daily Test Execution Trends</CardTitle>
             </CardHeader>
             <CardContent>
-              <QABarChart data={!isDailyPassRateLoading ? [...dailyPassRate.data].reverse() : []} title="Test Execution Trends" />
+              <>
+                {dailyPassRateError && dailyPassRateError.message}
+                {!dailyPassRateError && (
+                  <QABarChart
+                    data={
+                      !isDailyPassRateLoading
+                        ? [...dailyPassRate.data].reverse()
+                        : []
+                    }
+                    title="Test Execution Trends"
+                  />
+                )}
+              </>
             </CardContent>
           </Card>
         </div>
