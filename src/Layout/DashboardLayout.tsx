@@ -81,14 +81,12 @@ const DashboardLayout = () => {
   const PageHeader = () => {
     const pageName = getPageNameFromPath(location.pathname);
     const pathList: string[] = [];
-    console.log(pageName === "Unknown Page");
     if (pageName === "Unknown Page") {
       location.pathname
         .split("/")
         .slice(1)
         .map((path) => pathList.push(path));
     }
-    console.log(pathList);
 
     return (
       <div className="flex items-center gap-4 p-4 bg-background border-b border-mac-light-border dark:border-mac-dark-border">

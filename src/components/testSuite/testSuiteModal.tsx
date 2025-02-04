@@ -197,7 +197,7 @@ const TestSuiteModal = ({
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-x-2">
             <label className="text-sm font-medium">REGRESSION</label>
             <input
               className="p-2"

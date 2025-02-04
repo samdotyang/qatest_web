@@ -130,7 +130,7 @@ const Dashboard = () => {
             <InfoCard title="Recently Added cases" isLoading={isLoading}>
               <p>Content{/* Placeholder */}</p>
             </InfoCard>
-            <InfoCard title="Coverage (FAKE DATA)" isLoading={isLoading}>
+            <InfoCard title="Coverage (FAKE)" isLoading={isLoading}>
               <>
                 <div className="border-b p-2">
                   <div className="grid grid-cols-2">
