@@ -17,7 +17,6 @@ import {
   useGetAutomationRunnerList,
 } from "@/hooks";
 import SearchableSelect from "@/components/searchableSelect";
-import Terminal from "@/components/terminal/terminal";
 import { usePageAlertContext } from "@/contexts/pageAlertContext";
 import { AutomationRunnerList } from "@/components/automation/automationRunnerList";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -30,10 +29,7 @@ const PLATFORM_OPTIONS = ["Web", "Api", "iOS", "Android"];
 const AutomationDashboard = () => {
   const { currentTheme } = useThemeContext();
   const pageAlertContext = usePageAlertContext();
-  const messageRef = useRef<HTMLPreElement>(null);
-  const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isRunning, setIsRunning] = useState(false);
-  const [content, setContent] = useState("");
   const { featuresIsFetching, features, featuresFetchError } =
     useAutomationFeatureList();
   const { servicesIsFetching, services, servicesFetchError } =
@@ -88,6 +84,17 @@ const AutomationDashboard = () => {
       ...prev,
       [field]: value,
     }));
+  };
+
+  const deleteRunner = async (id: string) => {
+    try {
+      await axios.delete(
+        `${process.env.REACT_APP_BACKEND_API}/automation/tasks/${id}`
+      );
+      refetchRunnerList();
+    } catch (error) {
+      pageAlertContext.setAlert(`${error}`, "error");
+    }
   };
 
   return (
@@ -262,7 +269,10 @@ const AutomationDashboard = () => {
               </Card>
             )}
             {!isAutomationRunnerListFetching && (
-              <AutomationRunnerList runnerList={automationRunnerList.data} />
+              <AutomationRunnerList
+                runnerList={automationRunnerList.data}
+                onItemDelete={deleteRunner}
+              />
             )}
           </div>
         </div>

@@ -11,7 +11,7 @@ import {
   useGetStressHistoryList,
 } from "./stress";
 
-import { useGetAutomationRunnerList } from "./automation";
+import { useGetAutomationRunnerList, useTerminalWebSocket } from "./automation";
 
 import { useTestRunList, useTestRunDetail } from "./testrun";
 
@@ -27,6 +27,7 @@ export {
   useGetAutomationRunnerList,
   useGetAutomationTestCase,
   useGetAutomationTestCaseCount,
+  useTerminalWebSocket,
 
   // Stress
   useGetStressDataList,
