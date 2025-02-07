@@ -127,7 +127,7 @@ export const StressPanel = ({ onSubmit }: StressConfigProps) => {
 
   return (
     <>
-      <div className="flex flex-col space-y-2 bg-card shadow-lg rounded-lg max-w-screen-md overflow-hidden p-4 text-primary-label ">
+      <div className="flex flex-col space-y-2 bg-card shadow-lg rounded-lg max-w-(--breakpoint-md) overflow-hidden p-4 text-primary-label ">
         <div className="space-y-2">
           <div className="grid grid-cols-3">
             <span className="m-auto">preset data:</span>

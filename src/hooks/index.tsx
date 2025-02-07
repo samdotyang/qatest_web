@@ -18,6 +18,7 @@ import { useTestRunList, useTestRunDetail } from "./testrun";
 import { useGetTestSuiteList } from "./testSuite";
 
 import { useGetPassRate } from "./report";
+import { useGetTeamList } from "./team";
 
 export {
   // Automation
@@ -43,4 +44,7 @@ export {
 
   //report
   useGetPassRate,
+
+  // team
+  useGetTeamList,
 };

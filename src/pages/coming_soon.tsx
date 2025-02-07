@@ -3,7 +3,7 @@ import githubLogo from '@/github.svg';
 
 const ComingSoonPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue to-purple flex items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-blue to-purple flex items-center justify-center p-4">
       <div className="max-w-4xl w-full text-center">
         {/* Main content */}
         <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">

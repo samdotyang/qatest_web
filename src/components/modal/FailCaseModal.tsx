@@ -112,7 +112,7 @@ export const FailCaseModal = ({
       >
         <div className="relative w-full max-w-max h-full md:h-auto m-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative border border-black dark:border-gray-700 rounded-lg shadow bg-card" >
+          <div className="relative border border-black dark:border-gray-700 rounded-lg shadow-xs bg-card" >
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
               <h3 className="text-xl font-semibold text-primary-label">

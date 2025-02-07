@@ -18,7 +18,7 @@ type ChartSectionProps = {
 };
 
 const StatCard = ({ title, value, isLoading }: StatCardProps) => (
-  <Card className="bg-card backdrop-blur-sm">
+  <Card className="bg-card backdrop-blur-xs">
     <CardContent className="pt-6">
       <div className="flex flex-col space-y-1">
         <p className="text-sm text-muted-foreground">{title}</p>
@@ -33,7 +33,7 @@ const StatCard = ({ title, value, isLoading }: StatCardProps) => (
 );
 
 const ChartSection = ({ title, data, error }: ChartSectionProps) => (
-  <Card className="bg-card backdrop-blur-sm">
+  <Card className="bg-card backdrop-blur-xs">
     <CardHeader className="pb-2">
       <CardTitle className="text-sm font-medium">{title}</CardTitle>
     </CardHeader>
@@ -152,7 +152,7 @@ const ReportDashboardPage = () => {
         </div>
         {/* Trends Section */}
         <div>
-          <Card className="bg-card backdrop-blur-sm">
+          <Card className="bg-card backdrop-blur-xs">
             <CardHeader>
               <CardTitle>Daily Test Execution Trends</CardTitle>
             </CardHeader>

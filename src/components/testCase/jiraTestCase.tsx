@@ -3,9 +3,6 @@ import { Pencil, Save } from "lucide-react";
 import JiraTestStep from "@/components/testStep/jiraTestStep";
 import TextEditor from "@components/textEditor/textEditor";
 import TestCaseSearchBar from "./searchBar";
-import Quill from "quill";
-
-const Delta = Quill.import("delta");
 
 type TestCase = {
   key: string;

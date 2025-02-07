@@ -7,6 +7,8 @@ import {
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Skeleton } from "@mui/material";
+import { useGetTeamList } from "@/hooks";
+import { Select, SelectItem, SelectContent, SelectValue, SelectTrigger } from "../ui/select";
 
 type TestSuite = {
   uuid?: string;
@@ -41,12 +43,15 @@ const TestSuiteModal = ({
   const [filterValue, setFilterValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cases, setCases] = useState<TestCase[]>([]);
+  const [selectedMainTeam, setSelectedMainTeam] = useState("");
   const [formData, setFormData] = useState<TestSuite>({
     title: "",
     cases: [],
     is_regression: false,
     team: "",
   });
+
+  const { teamList, teamListIsFetching, teamListError } = useGetTeamList();
 
   // Initialize form with testSuite data if in edit mode
   useEffect(() => {
@@ -106,6 +111,21 @@ const TestSuiteModal = ({
         }
     }
   };
+
+  const handleTeamChange = (value: string) => {
+    if (value.startsWith("mainTeam")) {
+      const team = value.replace("mainTeam_", "")
+      setSelectedMainTeam(team)
+      // No sub team, set selected main team
+      if (teamList.data[team][0] === null) {
+        console.log("No sub team")
+        setFormData((prev) => ({ ...prev, team: team }));
+      }
+    } else if (value.startsWith("subTeam")) {
+      const team = value.replace("subTeam_", "")
+      setFormData((prev) => ({ ...prev, team: team }));
+    }
+  }
 
   const handleSave = async () => {
     try {
@@ -188,13 +208,32 @@ const TestSuiteModal = ({
 
           <div className="space-y-2">
             <label className="text-sm font-medium">TEAM</label>
-            <input
-              className="w-full rounded-lg p-2 bg-card"
-              placeholder="TEAM"
-              name="team"
-              value={formData.team}
-              onChange={handleFilterChange}
-            />
+            <div className="grid grid-cols-2 gap-2">
+              <Select onValueChange={handleTeamChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Main Team" />
+                </SelectTrigger>
+                <SelectContent>
+                  {!teamListIsFetching &&
+                  Object.keys(teamList.data).map((teamName) => (
+                    <SelectItem value={`mainTeam_${teamName}`}>{teamName}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select onValueChange={handleTeamChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Sub Team" />
+                </SelectTrigger>
+                <SelectContent>
+                {!teamListIsFetching &&
+                teamList.data[selectedMainTeam] &&
+                teamList.data[selectedMainTeam][0] !== null ? (
+                  teamList.data[selectedMainTeam].map((teamName: string) => (
+                    <SelectItem value={`subTeam_${teamName}`}>{teamName}</SelectItem>
+                  ))) : (<SelectItem value="no_sub_team">No Sub Team</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           <div className="space-x-2">

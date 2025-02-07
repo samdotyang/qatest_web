@@ -17,7 +17,7 @@ type StatCardProps = {
 };
 
 const StatCard = ({ title, value, isLoading }: StatCardProps) => (
-  <Card className="backdrop-blur-sm">
+  <Card className="backdrop-blur-xs">
     <CardContent className="pt-6">
       <div className="flex flex-col space-y-1 md:text-wrap">
         <p className="text-sm text-muted-foreground">{title}</p>
@@ -42,7 +42,7 @@ const InfoCard = ({ title, isLoading, children }: InfoCardProps) => (
     <CardHeader>
       <CardTitle>{title}</CardTitle>
     </CardHeader>
-    <CardContent className="bg-card backdrop-blur-sm border rounded-lg shadow-sm p-0">
+    <CardContent className="bg-card backdrop-blur-xs border rounded-lg shadow-2xs p-0">
       {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : children}
     </CardContent>
   </Card>
@@ -61,7 +61,7 @@ const CasesCountCard = ({
     <CardHeader>
       <CardTitle>Cases</CardTitle>
     </CardHeader>
-    <CardContent className="bg-card backdrop-blur-sm border rounded-lg shadow-sm p-0">
+    <CardContent className="bg-card backdrop-blur-xs border rounded-lg shadow-2xs p-0">
       {error && error.message}
       {isLoading ? (
         <Loader2 className="h-4 w-4 animate-spin" />
@@ -164,7 +164,7 @@ const Dashboard = () => {
         <div>PLACEHOLDER</div>
         {/* Trends Section */}
         <div>
-          <Card className="bg-card backdrop-blur-sm">
+          <Card className="bg-card backdrop-blur-xs">
             <CardHeader>
               <CardTitle>Daily Test Execution Trends</CardTitle>
             </CardHeader>

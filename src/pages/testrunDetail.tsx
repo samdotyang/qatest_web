@@ -224,9 +224,9 @@ const TestRunDetailPage = () => {
                           >
                             <span className="truncate">{test.name}</span>
                             {test.status === "Pass" ? (
-                              <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />
+                              <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
                             ) : (
-                              <XCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                              <XCircle className="w-4 h-4 text-red-600 shrink-0" />
                             )}
                           </button>
                         ))}

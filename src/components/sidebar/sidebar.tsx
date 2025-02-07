@@ -45,7 +45,7 @@ const Sidebar = ({
   return (
     <div
       className={classNames({
-        "shrink-0 bg-sidebar text-primary-label  h-full": true,
+        "shrink-0 bg-sidebar text-primary-label h-full": true,
         "fixed md:static md:translate-x-0 z-20": true,
         "transition-all duration-300 ease-in-out": true,
         "w-[310px]": !collapsed,
@@ -77,7 +77,7 @@ const Sidebar = ({
             <Icon className="w-5 h-5" />
           </button>
         </div>
-        <nav className="flex-grow">
+        <nav className="grow">
           <ul
             className={classNames({
               "my-2 flex flex-col gap-2 items-stretch": true,

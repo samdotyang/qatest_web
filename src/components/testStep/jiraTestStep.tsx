@@ -1,9 +1,6 @@
 import React, { useRef, useState } from "react";
 import TextEditor from "../textEditor/textEditor";
-import Quill from "quill";
-// import { convertTextToDelta } from 'node-quill-converter';
 
-const Delta = Quill.import('delta');
 
 type JiraTestStepProps = {
   steps: Array<Record<string, string>>;

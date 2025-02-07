@@ -11,10 +11,10 @@ export const LoadingSpinner = ({ className, ...props }: HTMLAttributes<HTMLDivEl
   // Page loading skeleton
   export const PageSkeleton = () => (
     <div className="animate-pulse space-y-4 p-4">
-      <div className="h-8 w-1/4 bg-sidebar-select rounded" />
+      <div className="h-8 w-1/4 bg-sidebar-select rounded-xs" />
       <div className="space-y-3">
-        <div className="h-4 w-3/4 bg-sidebar-select rounded" />
-        <div className="h-4 w-1/2 bg-sidebar-select rounded" />
+        <div className="h-4 w-3/4 bg-sidebar-select rounded-xs" />
+        <div className="h-4 w-1/2 bg-sidebar-select rounded-xs" />
       </div>
     </div>
   );

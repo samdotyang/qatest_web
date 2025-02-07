@@ -1,7 +1,6 @@
 import TextEditor from "@/components/textEditor/textEditor";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Quill from "quill";
-import { redirect } from "react-router-dom";
 
 
 const Delta = Quill.import("delta");
