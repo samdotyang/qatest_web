@@ -2,7 +2,7 @@ import StressHistoryListItem from "./stressHistoryListItem";
 
 
 type StressHistoryListItemProps = {
-    data: Array<Record<any, any>>;
+    data: Array<Record<string, string>>;
   };
   
   const StressHistoryListHeader = () => {

@@ -5,7 +5,7 @@ export const useAutomationCaseCount = () => {
     queryKey: ["automationCaseCount"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/testcase/automation/count`
+        `${import.meta.env.VITE_APP_BACKEND_API}/testcase/automation/count`
       );
       const json_response = await response.json();
       return json_response;
@@ -33,7 +33,7 @@ export const useAutomationFeatureList = () => {
     queryKey: ["automationFeatureList"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/automation/features`
+        `${import.meta.env.VITE_APP_BACKEND_API}/automation/features`
       );
       const json_response = await response.json();
       const features: Option[] = [];
@@ -67,7 +67,7 @@ export const useAutomationServiceList = () => {
     queryKey: ["automationServiceList"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/automation/services`
+        `${import.meta.env.VITE_APP_BACKEND_API}/automation/services`
       );
       const json_response = await response.json();
       const services: Option[] = [];
@@ -101,7 +101,7 @@ export const useGetAutomationTestCase = (caseId: string) => {
     queryKey: [`automationCase_${caseId}`],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/testcase/automation/${caseId}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/testcase/automation/${caseId}`
       );
       const json_response = await response.json();
       return json_response;
@@ -123,7 +123,7 @@ export const useGetAutomationTestCaseCount = (days?: string, team?: string) => {
       if (days) queryParams.days = days;
       if (team) queryParams.team = team;
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/testcase/automation/recent?${new URLSearchParams(queryParams)}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/testcase/automation/recent?${new URLSearchParams(queryParams)}`
       );
       const json_response = await response.json();
       return json_response;

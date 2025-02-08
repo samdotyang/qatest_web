@@ -6,7 +6,7 @@ export const useGetAutomationRunnerList = () => {
     queryKey: ["getAutomationRunnerList"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/automation/runners`
+        `${import.meta.env.VITE_APP_BACKEND_API}/automation/runners`
       );
       const json_response = await response.json();
       return json_response;
@@ -40,7 +40,7 @@ export const useTerminalWebSocket = (
       try {
         console.log(`Creating new WebSocket connection for ${automationId}`);
         const socket = new WebSocket(
-          `${process.env.REACT_APP_BACKEND_API}/terminal/ws/${automationId}`
+          `${import.meta.env.VITE_APP_BACKEND_API}/terminal/ws/${automationId}`
         );
 
         socket.onopen = () => {

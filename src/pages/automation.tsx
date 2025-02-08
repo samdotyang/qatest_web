@@ -63,7 +63,7 @@ const AutomationDashboard = () => {
     setIsRunning(true);
     try {
       await axios.post(
-        `${process.env.REACT_APP_BACKEND_API}/automation/run`,
+        `${import.meta.env.VITE_APP_BACKEND_API}/automation/run`,
         automationConfig
       );
       refetchRunnerList();
@@ -89,7 +89,7 @@ const AutomationDashboard = () => {
   const deleteRunner = async (id: string) => {
     try {
       await axios.delete(
-        `${process.env.REACT_APP_BACKEND_API}/automation/tasks/${id}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/automation/tasks/${id}`
       );
       refetchRunnerList();
     } catch (error) {

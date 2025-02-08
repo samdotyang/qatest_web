@@ -33,7 +33,7 @@ export const useGetPassRate = (team?: string, days?: number, type?: string) => {
     queryFn: async () => {
       const response = await fetch(
         `${
-          process.env.REACT_APP_BACKEND_API
+          import.meta.env.VITE_APP_BACKEND_API
         }/report/pass_rates?${searchParams.toString()}`
       );
       const json_response = await response.json();

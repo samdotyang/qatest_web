@@ -5,7 +5,7 @@ export const useGetTestSuiteList = () => {
     queryKey: ["getTestSuiteList"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/testsuite/lists`
+        `${import.meta.env.VITE_APP_BACKEND_API}/testsuite/lists`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

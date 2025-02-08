@@ -6,7 +6,7 @@ export const useTestRunList = (limit: number) => {
     queryFn: async () => {
       const response = await fetch(
         `${
-          process.env.REACT_APP_BACKEND_API
+          import.meta.env.VITE_APP_BACKEND_API
         }/testrun/lists?${new URLSearchParams({
           limit: `${limit}`,
         }).toString()}`
@@ -27,7 +27,7 @@ export const useTestRunDetail = (testRunId: string) => {
     queryKey: [`testRunDetail_${testRunId}`],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/report/${testRunId}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/report/${testRunId}`
       );
       const json_response = await response.json();
       return json_response.data;

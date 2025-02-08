@@ -13,7 +13,7 @@ export const useGetLogContent = (filename: string) => {
     const { data, isFetching, error } = useQuery({
         queryKey: [`getLogContent_${filename}`],
         queryFn: async () => {
-            const response = await fetch(`${process.env.REACT_APP_BACKEND_API}/logs/content/${filename}`)
+            const response = await fetch(`${import.meta.env.VITE_APP_BACKEND_API}/logs/content/${filename}`)
             return await response.text()
         }
     })

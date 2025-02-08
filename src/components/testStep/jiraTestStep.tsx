@@ -16,7 +16,7 @@ const JiraTestStepHeader = () => {
 }
 
 const JiraTestStep = ({ steps }: JiraTestStepProps) => {
-  const quillref = useRef();
+  const quillref = useRef(null);
   const [readOnly, setReadOnly] = useState(true)
   return (
     <>

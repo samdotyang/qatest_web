@@ -54,7 +54,7 @@ const LogView = ({ path, selected }: { path: string; selected: string }) => {
   const [showList, setShowList] = useState(false);
   const [selectedLog, setSelectedLog] = useState(selected);
   const getLog = () => {
-    fetch(`${process.env.REACT_APP_BACKEND_API}/logs`, {
+    fetch(`${import.meta.env.VITE_APP_BACKEND_API}/logs`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const LogView = ({ path, selected }: { path: string; selected: string }) => {
 
   const getLogContent = (logName: string) => {
     fetch(
-      `${process.env.REACT_APP_BACKEND_API}/logs?` +
+      `${import.meta.env.VITE_APP_BACKEND_API}/logs?` +
         new URLSearchParams({
           date: path.split("/")[0],
           host: path.split("/")[1],
@@ -142,7 +142,7 @@ const ScreenshotView = ({ path }: { path: string }) => {
   const [content, setContent] = useState("");
   const [selectedImage, setSelectedImage] = useState("")
   const getImageList = () => {
-    fetch(`${process.env.REACT_APP_BACKEND_API}/logs`, {
+    fetch(`${import.meta.env.VITE_APP_BACKEND_API}/logs`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +165,7 @@ const ScreenshotView = ({ path }: { path: string }) => {
   };
   const getImageContent = (imageName: string) => {
     fetch(
-      `${process.env.REACT_APP_BACKEND_API}/logs?` +
+      `${import.meta.env.VITE_APP_BACKEND_API}/logs?` +
         new URLSearchParams({
           date: path.split("/")[0],
           host: path.split("/")[1],
@@ -204,7 +204,7 @@ const ScreenshotView = ({ path }: { path: string }) => {
               >
                 {image}
                 {/* <img
-                                src={`${process.env.REACT_APP_BACKEND_API}/logs/${path}/${image}`}
+                                src={`${import.meta.env.VITE_APP_BACKEND_API}/logs/${path}/${image}`}
                                 alt={image}
                                 width="100%"
                             /> */}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Pencil, Save } from "lucide-react";
 import JiraTestStep from "@/components/testStep/jiraTestStep";
-import TextEditor from "@components/textEditor/textEditor";
+import TextEditor from "@/components/textEditor/textEditor";
 import TestCaseSearchBar from "./searchBar";
 
 type TestCase = {
@@ -47,7 +47,7 @@ const JiraTestCase = ({
 }: JiraTestCaseProps) => {
   const [isEdit, setIsEdit] = useState(false);
 
-  const quillRef = useRef();
+  const quillRef = useRef(null);
 
   // const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
   //   setTestCase((prev) => ({ ...prev!, precondition: e.target.value }));

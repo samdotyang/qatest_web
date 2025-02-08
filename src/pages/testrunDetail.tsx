@@ -47,7 +47,7 @@ const sort_object = (data: TestExecution, filterString: string) => {
   }
   const sorted_data: Record<string, CaseExecution[]> = {};
 
-  Object.entries(data.cases).forEach(([key, value], index) => {
+  Object.entries(data.cases).forEach(([key, value]) => {
     const filter_value = value.filter((caseExecution) =>
       caseExecution.name.includes(filterString)
     );
@@ -63,7 +63,7 @@ const sort_object = (data: TestExecution, filterString: string) => {
 
 const TestRunDetailPage = () => {
   const { testRunId } = useParams();
-  const { testRunDetail, isTestRunDetailLoading, testRunDetailError } =
+  const { testRunDetail, isTestRunDetailLoading } =
     useTestRunDetail(testRunId!);
 
   // props

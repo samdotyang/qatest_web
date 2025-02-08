@@ -5,7 +5,7 @@ export const useGetTeamList = () => {
     queryKey: ["teamList"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/teams`
+        `${import.meta.env.VITE_APP_BACKEND_API}/teams`
       );
       const json_response = await response.json();
       return json_response;

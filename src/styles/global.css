@@ -1,5 +1,67 @@
-@tailwind base;
-@tailwind utilities;
-@tailwind components;
+@import 'tailwindcss';
 
-@import '@radix-ui/themes/styles.css';
+@import '@radix-ui/themes/styles.css' layer(components);
+
+@plugin 'tailwindcss-animate';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --background-image-gradient-radial: radial-gradient(var(--tw-gradient-stops));
+  --background-image-gradient-conic: conic-gradient(
+    from 180deg at 50% 50%,
+    var(--tw-gradient-stops)
+  );
+
+  --grid-template-columns-sidebar: 300px auto;
+  --grid-template-columns-sidebar-collapsed: 64px auto;
+
+  --color-primary: var(--color-primary);
+  --color-secondary: var(--color-secondary);
+  --color-background: var(--color-background);
+  --color-primary-label: var(--color-primary-label);
+  --color-secondary-label: var(--color-secondary-label);
+  --color-sidebar: var(--color-sidebar);
+  --color-sidebar-select: var(--color-sidebar-select);
+  --color-card: var(--color-card);
+  --color-button: var(--color-button);
+  --color-button-destructive: rgba(255, 59, 48);
+  --color-red: var(--color-red);
+  --color-orange: var(--color-orange);
+  --color-yellow: var(--color-yellow);
+  --color-green: var(--color-green);
+  --color-mint: var(--color-mint);
+  --color-teal: var(--color-teal);
+  --color-cyan: var(--color-cyan);
+  --color-blue: var(--color-blue);
+  --color-indigo: var(--color-indigo);
+  --color-purple: var(--color-purple);
+  --color-pink: var(--color-pink);
+  --color-brown: var(--color-brown);
+  --color-mac-dark-card: rgba(51, 53, 55);
+  --color-mac-light-card: rgba(246, 247, 248);
+  --color-mac-dark-background: rgba(29, 31, 33);
+  --color-mac-light-background: rgba(255, 255, 255);
+  --color-mac-dark: rgba(29, 32, 37);
+  --color-mac-light: rgba(255, 255, 255);
+  --color-hyperlink-dark: rgba(10, 132, 255);
+  --color-hyperlink-light: rgba(0, 122, 255);
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}

@@ -6,7 +6,7 @@ import Quill from "quill";
 const Delta = Quill.import("delta");
 
 const TestPlanPage = () => {
-  const ref = useRef();
+  const ref = useRef(null);
   return (
     <div className="text-primary-label  border border-1 dark:border-gray-400">
       <TextEditor

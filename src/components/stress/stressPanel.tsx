@@ -1,12 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { useGetStressDataList, useGetStressData } from "@/hooks";
-import {
-  Select,
-  SelectItem,
-  SelectContent,
-  SelectValue,
-  SelectTrigger,
-} from "@/components/ui/select";
 import SearchableSelect from "../searchableSelect";
 
 type StressDataProps = {

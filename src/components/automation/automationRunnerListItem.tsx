@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { ChevronRight, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 

@@ -6,7 +6,7 @@ export const useGetStressDataList = () => {
     queryKey: ["stressDataList"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/stress/lists`
+        `${import.meta.env.VITE_APP_BACKEND_API}/stress/lists`
       );
       return await response.json();
     },
@@ -24,7 +24,7 @@ export const useGetStressData = (filename: string) => {
     queryKey: ["stressData"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/stress/data/${filename}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/stress/data/${filename}`
       );
       const json_response = await response.json();
       return JSON.parse(json_response.data);
@@ -50,7 +50,7 @@ export const useGetStressHistoryList = () => {
     queryKey: ["stressHistories"],
     queryFn: async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_API}/stress/results`
+        `${import.meta.env.VITE_APP_BACKEND_API}/stress/results`
       );
       return await response.json();
     },

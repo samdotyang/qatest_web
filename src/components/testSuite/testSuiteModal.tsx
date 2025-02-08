@@ -65,7 +65,7 @@ const TestSuiteModal = ({
     try {
       const response = await fetch(
         `${
-          process.env.REACT_APP_BACKEND_API
+          import.meta.env.VITE_APP_BACKEND_API
         }/testcase?${filterType}=${encodeURIComponent(filterValue)}`
       );
       const data = await response.json();
@@ -130,8 +130,8 @@ const TestSuiteModal = ({
   const handleSave = async () => {
     try {
       const endpoint = testSuite
-        ? `${process.env.REACT_APP_BACKEND_API}/testsuite/${testSuite.uuid}/update`
-        : `${process.env.REACT_APP_BACKEND_API}/testsuite/save`;
+        ? `${import.meta.env.VITE_APP_BACKEND_API}/testsuite/${testSuite.uuid}/update`
+        : `${import.meta.env.VITE_APP_BACKEND_API}/testsuite/save`;
 
       const response = await axios.post(endpoint, formData);
 

@@ -1,6 +1,6 @@
 type StressHistoryListItemProps = {
   index: number;
-  item: Record<any, any>;
+  item: Record<string, string>;
 };
 
 const StressHistoryListItem = ({  index, item }: StressHistoryListItemProps) => {

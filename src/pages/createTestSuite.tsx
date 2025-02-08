@@ -37,7 +37,7 @@ const CreateTestRunPage = () => {
     try {
       const response = await fetch(
         `${
-          process.env.REACT_APP_BACKEND_API
+          import.meta.env.VITE_APP_BACKEND_API
         }/testcase?${filterType}=${encodeURIComponent(filterValue)}`
       );
       const data = await response.json();
@@ -85,7 +85,7 @@ const CreateTestRunPage = () => {
 
   const handleSave = async () => {
     const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_API}/testsuite/save`,
+      `${import.meta.env.VITE_APP_BACKEND_API}/testsuite/save`,
       testRun
     );
     const result = await response.data;

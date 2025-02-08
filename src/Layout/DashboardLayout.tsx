@@ -124,14 +124,6 @@ const DashboardLayout = () => {
         <PageAlertContextProvider>
           <div className="flex flex-col max-h-screen">
             <PageAlert />
-            <div className="flex flex-row">
-              <div>
-                1
-              </div>
-              <div>
-                2
-              </div>
-            </div>
             <div className="flex flex-row w-full overflow-x-hidden bg-background">
               <Sidebar
                 title={"QA"}

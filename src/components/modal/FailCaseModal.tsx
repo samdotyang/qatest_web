@@ -25,7 +25,7 @@ interface FailTestCaseModalProps {
 
 type StepProps = {
   stepName: string;
-  args: {};
+  args: Record<string, string>;
 };
 
 const FailStep = ({ stepName, args }: StepProps) => {
@@ -112,7 +112,7 @@ export const FailCaseModal = ({
       >
         <div className="relative w-full max-w-max h-full md:h-auto m-auto">
           {/* <!-- Modal content --> */}
-          <div className="relative border border-black dark:border-gray-700 rounded-lg shadow-xs bg-card" >
+          <div className="relative border border-black dark:border-gray-700 rounded-lg shadow-2xs bg-card" >
             {/* <!-- Modal header --> */}
             <div className="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
               <h3 className="text-xl font-semibold text-primary-label">
@@ -164,7 +164,7 @@ export const FailCaseModal = ({
                 const stepName = JSON.parse(item)["name"];
                 const args = JSON.parse(item)["args"];
                 const lineNo = JSON.parse(item)["lineNo"];
-                var fail_lineNo;
+                let fail_lineNo;
                 if (data.status === "Fail") {
                   try {
                     fail_lineNo = JSON.parse(data.fail_function)["lineNum"];

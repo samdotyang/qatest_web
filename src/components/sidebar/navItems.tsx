@@ -1,7 +1,6 @@
 import React from "react";
 import {
   DocumentTextIcon,
-  FolderIcon,
   HomeIcon,
 } from "@heroicons/react/24/outline";
 import { Bot, Gauge, FileChartColumnIncreasing } from "lucide-react";

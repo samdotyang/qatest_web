@@ -40,7 +40,7 @@ const TestCasePage = () => {
         error: null,
       }));
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_API}/testcase/automation/${caseId}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/testcase/automation/${caseId}`
       );
       if (!res.data.data) {
         alert("No cases found")
@@ -62,7 +62,7 @@ const TestCasePage = () => {
   const getJiraTestCase = async (caseId: string) => {
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BACKEND_API}/testcase/jira/${caseId}`
+        `${import.meta.env.VITE_APP_BACKEND_API}/testcase/jira/${caseId}`
       );
       let data = res.data?.data;
       if (!data) {
