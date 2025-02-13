@@ -1,4 +1,4 @@
-import { PageAlertContext } from '@contexts/pageAlertContext';
+import { PageAlertContext } from '@/contexts/pageAlertContext';
 
 type PageProps = {
     children: React.ReactNode;

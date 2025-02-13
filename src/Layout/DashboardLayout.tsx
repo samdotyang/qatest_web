@@ -103,9 +103,9 @@ const DashboardLayout = () => {
           {pathList.length > 0 ? (
             pathList.map((path, index) =>
               index + 1 === location.pathname.split("/").slice(1).length ? (
-                <span className="text-primary-label font-medium">{path}</span>
+                <span key={index} className="text-primary-label font-medium">{path}</span>
               ) : (
-                <span className="text-secondary-label">{path} /</span>
+                <span key={index} className="text-secondary-label">{path} /</span>
               )
             )
           ) : (

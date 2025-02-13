@@ -1,5 +1,6 @@
 import { Skeleton } from "@mui/material";
 import TestSuiteListItem from "./testSuiteListItem";
+import { Link } from "react-router-dom";
 
 import { useGetTestSuiteList } from "@/hooks";
 
@@ -17,8 +18,11 @@ const TestSuiteList = () => {
 
   return (
     <>
-      <div className="text-primary-label ">
+      <div className="text-primary-label space-y-2">
+        <div className="flex justify-between items-center mb-4">
         <div className="text-lg uppercase font-bold">Test Suite</div>
+        <button onClick={() => {}} className="bg-blue hover:bg-blue-700 text-white rounded-lg px-4 py-2">Create Test Suite</button>
+        </div>
         {testSuiteListError && (
           <>
             <div>
@@ -39,7 +43,11 @@ const TestSuiteList = () => {
         {!isTestSuiteListFetching && testSuiteList?.data &&
           (testSuiteList?.data.length > 0 ? (
             testSuiteList.data.map((testSuite: TestSuite, index: number) => (
-              <TestSuiteListItem key={index} testSuite={testSuite} />
+              <div key={`list_${testSuite.uuid}`}>
+              <Link to={`/testsuite/${testSuite.uuid}`} state={{ a: "testSuite" }}>
+                <TestSuiteListItem key={index} testSuite={testSuite} />
+               </Link>
+               </div>
             ))
           ) : (
             <div className="bg-card rounded-lg p-2">

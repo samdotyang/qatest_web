@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Tabs, Tab, TabPanel } from "@components/tabs";
+import { Tabs, Tab, TabPanel } from "@/components/tabs";
 
-import { AutomationTestCase, JiraTestCase } from "@components/testCase";
+import { AutomationTestCase, JiraTestCase } from "@/components/testCase";
 import axios from "axios";
 
 const TestCasePage = () => {

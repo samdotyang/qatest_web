@@ -15,7 +15,7 @@ import { useGetAutomationRunnerList, useTerminalWebSocket } from "./automation";
 
 import { useTestRunList, useTestRunDetail } from "./testrun";
 
-import { useGetTestSuiteList } from "./testSuite";
+import { useGetTestSuiteList, useGetTestSuite } from "./testSuite";
 
 import { useGetPassRate } from "./report";
 import { useGetTeamList } from "./team";
@@ -41,6 +41,7 @@ export {
 
   //testsuite
   useGetTestSuiteList,
+  useGetTestSuite,
 
   //report
   useGetPassRate,

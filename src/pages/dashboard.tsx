@@ -43,7 +43,7 @@ const InfoCard = ({ title, isLoading, children }: InfoCardProps) => (
       <CardTitle>{title}</CardTitle>
     </CardHeader>
     <CardContent className="bg-card backdrop-blur-xs border rounded-lg shadow-2xs p-0">
-      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : children}
+      {isLoading ? <Loader2 className="h-4 w-4 animate-spin py-2" /> : children}
     </CardContent>
   </Card>
 );

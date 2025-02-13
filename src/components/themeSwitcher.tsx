@@ -1,5 +1,5 @@
 import { Palette } from "lucide-react";
-import { useThemeContext } from "@contexts/themeContext";
+import { useThemeContext } from "@/contexts/themeContext";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { Button } from "./ui/button";
 
