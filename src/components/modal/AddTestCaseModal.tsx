@@ -16,13 +16,14 @@ import {
 } from "@/components/ui/dialog";
 import { LoadingSpinner } from "@/components/ui/loading";
 import { Button } from "@/components/ui/button";
-import { Search } from "../searchField";
+import { Search } from "@/components/ui/search";
+import { Checkbox } from "@/components/ui/checkbox";
+import { CheckedState } from "@radix-ui/react-checkbox";
 
 type AddTestCaseModal = {
   isOpen: boolean;
   onClose: () => void;
   onSuccess?: (selectedCases: string[]) => void;
-  testSuiteId: string;
   existingCases: string[];
 };
 
@@ -34,7 +35,7 @@ type TestCase = {
   priority: string;
 };
 
-const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCases }: AddTestCaseModal) => {
+const AddTestCaseModal = ({ isOpen, onClose, onSuccess, existingCases }: AddTestCaseModal) => {
   const [filterType, setFilterType] = useState("feature");
   const [filterValue, setFilterValue] = useState("");
   const [filterCaseId, setFilterCaseId] = useState("");
@@ -49,11 +50,7 @@ const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCas
 
   // Reset form when modal closes
   const handleClose = () => {
-    setFilterType("feature");
-    setFilterValue("");
-    setFilterCaseId("");
-    setCases([]);
-    setSelectedCases([]);
+    setSelectedCases(existingCases);
     onClose();
   };
 
@@ -98,7 +95,6 @@ const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCas
   };
 
   const handleSave = async () => {
-    if (selectedCases.length === 0) return;
     try{
       onSuccess?.(selectedCases);
       handleClose();
@@ -115,6 +111,20 @@ const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCas
     if (event.key === "Enter") {
       await fetchFilteredCases();
     }
+  };
+
+  const handleChecked = (caseId: string) => {
+    console.log(caseId)
+    if (selectedCases.includes(caseId)) {
+      return true
+    }
+    return false
+  }
+
+  const getChangedCasesCount = () => {
+    const added = selectedCases.filter(caseId => !existingCases.includes(caseId));
+    const removed = existingCases.filter(caseId => !selectedCases.includes(caseId));
+    return added.length + removed.length;
   };
 
   return (
@@ -158,6 +168,22 @@ const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCas
           </div>
         </div>
 
+        {getFilterCases(cases).length > 0 &&
+        <div className="space-x-2 text-primary-label">
+          <Checkbox id="select_all" onCheckedChange={(check: CheckedState) => {
+            if (check === 'indeterminate') return;
+            const caseIds = getFilterCases(cases).map((tc) => tc.case_id);
+
+            setSelectedCases((prev) => check? Array.from(new Set([...caseIds, ...selectedCases])) : prev.filter(id => !caseIds.includes(id)));
+            // if (check as boolean) {
+            //   const newList = [...caseIds, ...selectedCases]
+            //     setSelectedCases(Array.from(new Set(newList)))
+            // } 
+          }} />
+          <label htmlFor="select_all">Select All</label>
+        </div>
+        }
+
         <div className="border rounded-md min-h-[200px] max-h-[400px] overflow-y-auto p-2 text-primary-label">
           <Search
             placeholder="Search by Case ID"
@@ -181,7 +207,7 @@ const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCas
                   type="checkbox"
                   id={testCase.case_id}
                   className="h-4 w-4"
-                  checked={selectedCases.includes(testCase.case_id)}
+                  checked={handleChecked(testCase.case_id)}
                   onChange={() => {handleCaseSelection(testCase.case_id)}}
                 />
                 <label htmlFor={testCase.case_id}>{testCase.case_id}</label>
@@ -199,10 +225,10 @@ const AddTestCaseModal = ({ isOpen, onClose, onSuccess, testSuiteId, existingCas
           </Button>
           <Button
             onClick={handleSave}
-            disabled={selectedCases.length === 0 || isSaving}
+            disabled={isSaving}
           >
             {isSaving ? <LoadingSpinner className="mr-2" /> : null}
-            {isSaving ? 'Saving...' : `Update Cases (${selectedCases.length})`}
+            {isSaving ? 'Saving...' : `Update Cases (${getChangedCasesCount()})`}
             </Button>
         </DialogFooter>
       </DialogContent>

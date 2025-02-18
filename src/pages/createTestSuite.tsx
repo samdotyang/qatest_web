@@ -1,14 +1,27 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-import { Skeleton } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { useGetTeamList } from "@/hooks";
 
-type TestRun = {
-  name: string;
+import { Button } from "@/components/ui/button";
+import { Search } from "@/components/ui/search";
+
+import AddTestCaseModal from "@/components/modal/AddTestCaseModal";
+import {
+  TeamSelect,
+  DailyCheckbox,
+  TestSuiteTitleField,
+  RegressionCheckbox,
+  CaseList,
+} from "@/components/testSuite/titleField";
+
+type TestSuite = {
+  title: string;
   cases: string[];
   is_regression: boolean;
   team: string;
+  is_daily: boolean;
 };
 
 type TestCase = {
@@ -19,74 +32,57 @@ type TestCase = {
   priority: string;
 };
 
-const CreateTestRunPage = () => {
+const CreateTestSuitePage = () => {
   const navigate = useNavigate();
+
   const [filterType, setFilterType] = useState("feature");
   const [filterValue, setFilterValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [cases, setCases] = useState([]);
-  const [testRun, setTestRun] = useState<TestRun>({
-    name: "",
+  const [selectedMainTeam, setSelectedMainTeam] = useState("");
+  const [preSelectedSubTeam, setPreSelectedSubTeam] = useState("");
+  const [filterCaseId, setFilterCaseId] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formData, setFormData] = useState<TestSuite>({
+    title: "",
     cases: [],
     is_regression: false,
     team: "",
+    is_daily: false,
   });
 
-  const fetchFilteredCases = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(
-        `${
-          import.meta.env.VITE_APP_BACKEND_API
-        }/testcase?${filterType}=${encodeURIComponent(filterValue)}`
-      );
-      const data = await response.json();
-      setCases(data.data);
-    } catch (error) {
-      console.error("Failed to fetch cases:", error);
-      // You might want to add error state handling here
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { teamList, teamListIsFetching } = useGetTeamList();
 
   const handleFilterChange = (
     e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     switch (e.target.name) {
-      case "filterType":
-        setFilterType(e.target.value);
-        break;
-      case "filterValue":
-        setFilterValue(e.target.value);
-        break;
       case "title":
-        setTestRun((prev) => ({ ...prev, name: e.target.value }));
+        setFormData((prev) => ({ ...prev, title: e.target.value }));
         break;
       case "team":
-        setTestRun((prev) => ({ ...prev, team: e.target.value }));
+        setFormData((prev) => ({ ...prev, team: e.target.value }));
         break;
       case "is_regression":
-        setTestRun((prev) => ({
+        setFormData((prev) => ({
           ...prev,
           is_regression: (e.target as HTMLInputElement).checked,
         }));
         break;
-      default:
-        if (e.target.name.startsWith("checkbox")) {
-          const addCase = e.target.nextElementSibling!.innerHTML;
-          setTestRun((prev) => ({
-            ...prev,
-            cases: [...prev.cases, addCase],
-          }));
-        }
+      case "is_daily":
+        setFormData((prev) => ({
+          ...prev,
+          is_daily: (e.target as HTMLInputElement).checked,
+        }));
+        break;
     }
   };
 
   const handleSave = async () => {
     const response = await axios.post(
       `${import.meta.env.VITE_APP_BACKEND_API}/testsuite/save`,
-      testRun
+      formData
     );
     const result = await response.data;
     if (response.status === 200) {
@@ -98,106 +94,87 @@ const CreateTestRunPage = () => {
     }
   };
 
+  const handleTeamChange = (value: string) => {
+    if (value.startsWith("mainTeam")) {
+      setSelectedMainTeam(value);
+      const team = value.replace("mainTeam_", "");
+      // No sub team, set selected main team
+      if (teamList.data[team][0] === null) {
+        console.log("No sub team");
+        setFormData((prev) => ({ ...prev, team: team }));
+      }
+    } else if (value.startsWith("subTeam")) {
+      const team = value.replace("subTeam_", "");
+      setFormData((prev) => ({ ...prev, team: team }));
+    }
+  };
+
+  const handleClose = () => {};
+
+  const getFilterCases = (cases: string[]) => {
+    if (cases.length === 0) {
+      return [];
+    }
+    return cases.filter((c) =>
+      c.toLowerCase().includes(filterCaseId.toLowerCase())
+    );
+  };
+
   return (
-    <div className="space-y-4 p-4 text-primary-label ">
-      <div className="space-y-2">
-        <label className="text-sm font-medium">TITLE</label>
-        <input
-          className="w-full rounded-lg p-2 bg-card bg-card"
-          placeholder="title"
-          name="title"
-          value={testRun.name}
-          onChange={(e) => {
-            handleFilterChange(e);
+    <div>
+      <div className="space-y-4 p-4 text-primary-label">
+        <TestSuiteTitleField
+          value={formData.title}
+          onInputChange={handleFilterChange}
+        />
+
+        <TeamSelect
+          teamList={teamList}
+          selectedMainTeam={selectedMainTeam}
+          preSelectedSubTeam={preSelectedSubTeam}
+          teamListIsFetching={teamListIsFetching}
+          onTeamChange={handleTeamChange}
+        />
+
+        <RegressionCheckbox
+          checked={formData.is_regression}
+          onChange={(check) => {
+            setFormData((prev) => ({ ...prev, is_regression: check }));
           }}
         />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">FILTER</label>
-        <div className="flex gap-2">
-          <select
-            className="rounded-lg p-2 bg-card bg-card"
-            name="filterType"
-            onChange={(e) => handleFilterChange(e)}
-          >
-            {/* <option value="service">Service</option> */}
-            <option value="feature">Feature</option>
-            <option value="caseid">Case Id</option>
-          </select>
-          <input
-            className="w-full rounded-lg p-2 bg-card bg-card"
-            placeholder="filter"
-            name="filterValue"
-            onChange={(e) => handleFilterChange(e)}
-            value={filterValue}
-          />
-          <button
-            onClick={fetchFilteredCases}
-            className="bg-blue-600 hover:bg-blue-700 rounded-lg shrink-0 p-2"
-          >
-            Apply Filter
-          </button>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">TEAM</label>
-        <input
-          className="w-full rounded-lg p-2 bg-card bg-card"
-          placeholder="TEAM"
-          name="team"
-          value={testRun.team}
-          onChange={(e) => handleFilterChange(e)}
+
+        <DailyCheckbox
+          checked={formData.is_daily}
+          onChange={(check) => {
+            setFormData((prev) => ({ ...prev, is_daily: check }));
+          }}
         />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">REGRESSION</label>
-        <input className="p-2" type="checkbox" />
-      </div>
-      <div className="space-y-2">
-        <label className="text-sm font-medium">CASES</label>
-        <div className="border rounded-md min-h-[200px] max-h-[400px] overflow-y-auto p-2">
-          {isLoading ? (
-            // Loading skeleton
-            <div className="space-y-2">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <Skeleton key={n} className="h-6 w-full" />
-              ))}
-            </div>
-          ) : (
-            cases.map((testCase: TestCase) => (
-              <div
-                key={testCase.id}
-                className="flex items-center space-x-2 p-1"
-              >
-                <input
-                  type="checkbox"
-                  id={testCase.case_id}
-                  className="h-4 w-4"
-                  name={`checkbox_${testCase.id}`}
-                  onChange={(e) => handleFilterChange(e)}
-                />
-                <label htmlFor={testCase.case_id}>{testCase.case_id}</label>
-              </div>
-            ))
-          )}
-          {!isLoading && cases.length === 0 && (
-            <div className="text-center text-gray-500 py-4">
-              No test cases found. Try adjusting your filter.
-            </div>
-          )}
+
+        <CaseList
+          cases={formData.cases}
+          onManageCases={() => setIsModalOpen(true)}
+          getFilterCases={getFilterCases}
+        />
+
+        <div className="flex justify-end space-x-2">
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button onClick={handleSave}>
+            {isSaving ? "Saving..." : "Save"}
+          </Button>
         </div>
       </div>
-      
-      <div className="m-auto">
-        <button
-          className="rounded-lg px-4 py-2 bg-blue-600 text-primary-label "
-          onClick={handleSave}
-        >
-          Create
-        </button>
-      </div>
+      <AddTestCaseModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={(selectedCases: string[]) => {
+          setFormData((prev) => ({ ...prev, cases: selectedCases }));
+        }}
+        existingCases={formData.cases}
+      />
     </div>
   );
 };
 
-export default CreateTestRunPage;
+export default CreateTestSuitePage;

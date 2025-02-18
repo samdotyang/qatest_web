@@ -10,7 +10,7 @@ import {
 
 import { useTestRunDetail } from "@/hooks";
 
-import { Search } from "@/components/searchField";
+import { Search } from "@/components/ui/search";
 import { QAPieChart } from "@/components/ui/chart";
 import { FailCaseModal } from "@/components/modal";
 import { calculateTime } from "@/lib/utils";
@@ -69,7 +69,7 @@ const TestRunDetailPage = () => {
   // props
   const [filter, setFilter] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
-  const [itemClicked, setItemClicked] = useState<any>();
+  const [itemClicked, setItemClicked] = useState<CaseExecution>();
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [collapsedFeatures, setCollapsedFeatures] = useState(new Set<string>());
   const [statusFilter, setStatusFilter] = useState("all");
@@ -87,7 +87,7 @@ const TestRunDetailPage = () => {
     return tests.filter((test) => test.status === statusFilter);
   };
 
-  const handleItemClicked = (item: any) => {
+  const handleItemClicked = (item: CaseExecution) => {
     setShowModal((prev) => !prev);
     setItemClicked(item);
   };
