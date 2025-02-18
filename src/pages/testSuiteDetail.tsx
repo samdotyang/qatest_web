@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+
 import { useGetTeamList, useGetTestSuite } from "@/hooks";
+import { usePageAlertContext } from "@/contexts/pageAlertContext";
+
 import { Button } from "@/components/ui/button";
 import AddTestCaseModal from "@/components/modal/AddTestCaseModal";
-import { usePageAlertContext } from "@/contexts/pageAlertContext";
 import {
   CaseList,
   DailyCheckbox,
@@ -12,6 +14,8 @@ import {
   TeamSelect,
   TestSuiteTitleField,
 } from "@/components/testSuite/titleField";
+import { DeleteTestSuiteConfirmModal } from "@/components/testSuite/DeleteTestSuiteModal";
+import { deleteTestSuite } from "@/api/testsuite";
 
 type TestSuite = {
   uuid?: string;
@@ -24,9 +28,12 @@ type TestSuite = {
 
 const TestSuiteDetailPage = () => {
   const { testSuiteId } = useParams();
+  const navigate = useNavigate();
   const pageAlertContext = usePageAlertContext();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
+    useState(false);
   const [filterCaseId, setFilterCaseId] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [selectedMainTeam, setSelectedMainTeam] = useState("");
@@ -141,6 +148,7 @@ const TestSuiteDetailPage = () => {
         is_daily: false,
       });
     }
+    navigate(-1);
   };
 
   const getFilterCases = (cases: string[]) => {
@@ -162,11 +170,12 @@ const TestSuiteDetailPage = () => {
 
         {/* Team */}
         <TeamSelect
-        teamList={teamList}
+          teamList={teamList}
           selectedMainTeam={selectedMainTeam}
           preSelectedSubTeam={preSelectedSubTeam}
           teamListIsFetching={teamListIsFetching}
-          onTeamChange={handleTeamChange}/>
+          onTeamChange={handleTeamChange}
+        />
 
         <RegressionCheckbox
           checked={formData.is_regression}
@@ -184,13 +193,22 @@ const TestSuiteDetailPage = () => {
         <CaseList
           cases={formData.cases}
           onManageCases={() => setIsModalOpen(true)}
-          getFilterCases={(getFilterCases)}
+          getFilterCases={getFilterCases}
         />
 
         <div className="flex justify-end space-x-2">
           <Button variant="secondary" onClick={handleClose}>
             Cancel
           </Button>
+          <Button
+            variant="destructive"
+            onClick={() => {
+              setIsDeleteConfirmModalOpen(true);
+            }}
+          >
+            Delete
+          </Button>
+
           <Button onClick={handleSave}>
             {isSaving ? "Saving..." : "Save"}
           </Button>
@@ -204,6 +222,15 @@ const TestSuiteDetailPage = () => {
           setFormData((prev) => ({ ...prev, cases: selectedCases }));
         }}
         existingCases={formData.cases}
+      />
+      <DeleteTestSuiteConfirmModal
+        isOpen={isDeleteConfirmModalOpen}
+        onClose={() => setIsDeleteConfirmModalOpen(false)}
+        onDelete={() => {
+          deleteTestSuite(testSuite.uuid)
+          setIsDeleteConfirmModalOpen(false)
+          navigate(-1)
+        }}
       />
     </div>
   );

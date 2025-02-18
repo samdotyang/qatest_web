@@ -69,7 +69,7 @@ const TestRunDetailPage = () => {
   // props
   const [filter, setFilter] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
-  const [itemClicked, setItemClicked] = useState<CaseExecution>();
+  const [itemClicked, setItemClicked] = useState<any>();
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
   const [collapsedFeatures, setCollapsedFeatures] = useState(new Set<string>());
   const [statusFilter, setStatusFilter] = useState("all");

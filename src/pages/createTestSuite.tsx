@@ -109,7 +109,7 @@ const CreateTestSuitePage = () => {
     }
   };
 
-  const handleClose = () => {};
+  const handleClose = () => {navigate(-1)};
 
   const getFilterCases = (cases: string[]) => {
     if (cases.length === 0) {
